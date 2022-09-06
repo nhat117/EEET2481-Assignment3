@@ -10,13 +10,14 @@
 void System_Config(void);
 void SPI3_Config(void);
 void SPI2_Config(void);
+void SPI2_TX(unsigned char temp);
 void ADC7_Config(void);
-void SPI2_TX(unsigned char temp, unsigned char interrupt_char);
 void LCD_start(void);
 void LCD_command(unsigned char temp);
 void LCD_data(unsigned char temp);
 void LCD_clear(void);
 void LCD_SetAddress(uint8_t PageAddr, uint8_t ColumnAddr);
+void sent_char(unsigned char temp, unsigned char interrupt_char);
 
 int main(void)
 {
@@ -59,7 +60,7 @@ int main(void)
         {
             // TODO: Send data to SPI
             PC->DOUT |= (1 << 12);
-            SPI2_TX('2', '0');
+            sent_char('2','0');
         }
         else
         {
@@ -202,7 +203,7 @@ void SPI2_Config(void)
     SPI2->CNTRL |= (1 << 10); // 1: LSB is sent first
     SPI2->CNTRL &= ~(3 << 8); // 00: one transmit/receive word will be executed in one data transfer
 
-    SPI2->CNTRL &= ~(31 << 3); // Transmit/Receive bit length -> 32 bit
+    SPI2->CNTRL |= (0x08ul << 3); // Transmit/Receive bit length -> 8 bits or 1 byte during a transaction
     SPI2->CNTRL |= 9 << 3;     // 9: 9 bits transmitted/received per data transfer
 
     SPI2->CNTRL &= ~(1 << 2); // 1: Transmit at negative edge of SPI CLK
@@ -212,32 +213,26 @@ void SPI2_Config(void)
 }
 
 // Send consecutive char with interrupt char at a specific position
-void SPI2_TX(unsigned char temp, unsigned char interrupt_char)
+
+
+void SPI2_TX(unsigned char temp)
 {
     SPI2->SSR |= 1 << 0;
-    SPI2->TX[0] &= ~(0xffful << 0);
-    // Send 4 consecutive char into TX register
-    for (int i = 0; i < 4; i++)
-    {
-        // Write to SPI2 TX register
-        // Verify this
-        if (i == 0)
-        {
-            SPI2->TX[0] |= (interrupt_char & (0x01 << i)) << (i);
-        }
-        else if (i == 1)
-        {
-            SPI2->TX[0] |= (interrupt_char & (0x01 << i)) << (i + 8);
-        }
-        else
-        {
-            SPI2->TX[0] |= (temp & (0x01 << i)) << (i + 8);
+    SPI2->TX[0] = temp;
+    SPI2->CNTRL |= 1 << 0;
+    while (SPI2->CNTRL & (1 << 0)); //Check GO_BUSY flag of SPI2
+    SPI2->SSR &= ~(1 << 0);
+}
+
+void sent_char(unsigned char temp, unsigned char interrupt_char) {
+    for (int i = 0; i <4; i ++)  {
+        //Check for if busy flag
+        if (i==1) {
+            SPI2_TX(interrupt_char);
+        }  else {
+            SPI2_TX(temp);
         }
     }
-    SPI2->CNTRL |= 1 << 0;
-    while (SPI2->CNTRL & (1 << 0))
-        ;
-    SPI2->SSR &= ~(1 << 0);
 }
 
 void ADC7_Config(void)
