@@ -25,7 +25,7 @@ int main(void)
     char adc7_val_s[4] = "0000";
 
     System_Config();
-    GPIO_SetMode(PC, BIT12, GPIO_MODE_OUTPUT);
+    GPIO_SetMode(PC, BIT12, GPIO_MODE_OUTPUT); //LED for debugging
     SPI3_Config();
     SPI2_Config();
     ADC7_Config();
@@ -69,8 +69,6 @@ int main(void)
         CLK_SysTickDelay(2000000);
     }
 }
-
-#pragma once
 
 //------------------------------------------------------------------------------------------------------------------------------------
 // Functions definition
@@ -213,7 +211,6 @@ void SPI2_Config(void)
 }
 
 // Send consecutive char with interrupt char at a specific position
-
 
 void SPI2_TX(unsigned char temp)
 {
