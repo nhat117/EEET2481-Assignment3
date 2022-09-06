@@ -18,7 +18,6 @@ void LCD_data(unsigned char temp);
 void LCD_clear(void);
 void LCD_SetAddress(uint8_t PageAddr, uint8_t ColumnAddr);
 
-
 int main(void)
 {
     uint32_t adc7_val;
@@ -60,7 +59,7 @@ int main(void)
         {
             // TODO: Send data to SPI
             PC->DOUT |= (1 << 12);
-            SPI2_TX('2','0');
+            SPI2_TX('2', '0');
         }
         else
         {
@@ -70,7 +69,7 @@ int main(void)
     }
 }
 
-#pragma once 
+#pragma once
 
 //------------------------------------------------------------------------------------------------------------------------------------
 // Functions definition
@@ -203,7 +202,7 @@ void SPI2_Config(void)
     SPI2->CNTRL |= (1 << 10); // 1: LSB is sent first
     SPI2->CNTRL &= ~(3 << 8); // 00: one transmit/receive word will be executed in one data transfer
 
-    SPI2->CNTRL &= ~(31 << 3); // Transmit/Receive bit length
+    SPI2->CNTRL &= ~(31 << 3); // Transmit/Receive bit length -> 32 bit
     SPI2->CNTRL |= 9 << 3;     // 9: 9 bits transmitted/received per data transfer
 
     SPI2->CNTRL &= ~(1 << 2); // 1: Transmit at negative edge of SPI CLK
@@ -212,7 +211,7 @@ void SPI2_Config(void)
     // -> Divider = 24 -> SPI clock = 50 / ((24+1)*2) = 1 MHz
 }
 
-//Send 2022 to SPI
+// Send consecutive char with interrupt char at a specific position
 void SPI2_TX(unsigned char temp, unsigned char interrupt_char)
 {
     SPI2->SSR |= 1 << 0;
@@ -222,7 +221,11 @@ void SPI2_TX(unsigned char temp, unsigned char interrupt_char)
     {
         // Write to SPI2 TX register
         // Verify this
-        if (i == 1)
+        if (i == 0)
+        {
+            SPI2->TX[0] |= (interrupt_char & (0x01 << i)) << (i);
+        }
+        else if (i == 1)
         {
             SPI2->TX[0] |= (interrupt_char & (0x01 << i)) << (i + 8);
         }
