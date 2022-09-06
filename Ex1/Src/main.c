@@ -18,6 +18,7 @@ void LCD_data(unsigned char temp);
 void LCD_clear(void);
 void LCD_SetAddress(uint8_t PageAddr, uint8_t ColumnAddr);
 
+
 int main(void)
 {
     uint32_t adc7_val;
@@ -68,6 +69,8 @@ int main(void)
         CLK_SysTickDelay(2000000);
     }
 }
+
+#pragma once 
 
 //------------------------------------------------------------------------------------------------------------------------------------
 // Functions definition
