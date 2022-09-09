@@ -14,8 +14,8 @@ void LCD_data(unsigned char temp);
 void LCD_clear(void);
 void LCD_SetAddress(uint8_t PageAddr, uint8_t ColumnAddr);
 	char ReceivedByte;
-	volatile char longtitude[8];
-	char latitude[9];
+	volatile char longtitude[9];
+	volatile char latitude[10];
 	int cur = 0;
 	char line[140];
 	int flag = 0;
@@ -57,10 +57,20 @@ int main(void)
 					printC(0,0,ReceivedByte);
 					flag = 0;
 					line[cur++] = ReceivedByte;
-					if (ReceivedByte == '\n') {
-						cur = 0;
+
+					/*
+					if (cur >= 22 && cur <= 22 + 7) {
+						longtitude[cur- 22] = ReceivedByte;
 					}
-					CLK_SysTickDelay(50000);
+					*/
+					if (cur >= 31 && cur <= 30 + 9) {
+						latitude[cur - 31] = ReceivedByte;
+					}
+					if (cur == 131) {
+							cur = 0;
+					}
+					printS(0,40, latitude);
+					CLK_SysTickDelay(10000);
 				}
 
 
