@@ -7,8 +7,8 @@
 #define PLL_STATUS 1 << 2
 #define VOLTAGE_THRESHOLD 2000
 #define DELAY_TIME 80
-//TODO: Configuring the delay time
-//TODO: Verify the clck
+
+//Header function group
 void System_Config(void);
 void SPI3_Config(void);
 void SPI2_Config(void);
@@ -20,11 +20,14 @@ void LCD_data(unsigned char temp);
 void LCD_clear(void);
 void LCD_SetAddress(uint8_t PageAddr, uint8_t ColumnAddr);
 void sent_char(unsigned char temp, unsigned char interrupt_char);
+void ADC_handler(void);
+
+uint32_t adc7_val;
+char adc7_val_s[4] = "0000";
 
 int main(void)
 {
-	uint32_t adc7_val;
-	char adc7_val_s[4] = "0000";
+	
 
 	System_Config();
 	GPIO_SetMode(PC, BIT12, GPIO_MODE_OUTPUT);
@@ -49,33 +52,38 @@ int main(void)
 
 	while (1)
 	{
-		while (!(ADC->ADSR & (1 << 0)))
-			;				   // wait until conversion is completed (ADF=1)
-		ADC->ADSR |= (1 << 0); // write 1 to clear ADF
-		adc7_val = ADC->ADDR[7] & 0x0000FFFF;
-
-		sprintf(adc7_val_s, "%d", adc7_val);
-		printS_5x7(4 + 5 * 10, 40, "    ");
-		printS_5x7(4 + 5 * 10, 40, adc7_val_s);
+		ADC_handler();
+		
 
 		while (adc7_val > VOLTAGE_THRESHOLD)
 		{
 			// TODO: Send data to SPI
 			PC->DOUT |= (1 << 12);
 			sent_char('2', '0');
-			// Send out 2
-			// SPI2_TX('2');
+			ADC_handler();
 		}
 
-			PC->DOUT &= ~(1 << 12);
+		PC->DOUT &= ~(1 << 12);
 
-		CLK_SysTickDelay(2000000);
+		CLK_SysTickDelay(20000);
 	}
 }
+
 
 //------------------------------------------------------------------------------------------------------------------------------------
 // Functions definition
 //------------------------------------------------------------------------------------------------------------------------------------
+
+//For checkng the potentialmeter status
+void ADC_handler(void) {
+	while (!(ADC->ADSR & (1 << 0)))
+				;				   // wait until conversion is completed (ADF=1)
+	ADC->ADSR |= (1 << 0); // write 1 to clear ADF
+	adc7_val = ADC->ADDR[7] & 0x0000FFFF;
+	sprintf(adc7_val_s, "%d", adc7_val);
+	printS_5x7(4 + 5 * 10, 40, "    ");
+	printS_5x7(4 + 5 * 10, 40, adc7_val_s);
+}
 
 void LCD_start(void)
 {
@@ -214,11 +222,11 @@ void SPI2_Config(void)
 }
 
 // Send consecutive char with interrupt char at a specific position
-
 void SPI2_TX(unsigned char temp)
 {
 	SPI_SET_SS0_LOW(SPI2);
-	SPI_WRITE_TX0(SPI2, 0x100 + temp); // Write Data
+	SPI_WRITE_TX0(SPI2,temp);
+	// SPI2->TX[0] = temp;
 	SPI_TRIGGER(SPI2);				   // Trigger SPI data transfer
 	while (SPI_IS_BUSY(SPI2))
 		; // Check SPI3 busy status
@@ -230,14 +238,12 @@ void sent_char(unsigned char temp, unsigned char interrupt_char)
 	int i = 0;
 	while (i < 4)
 	{
-		if (i == 1)
-		{
-			SPI2_TX(interrupt_char);
-		}
-		else
-		{
-			SPI2_TX(temp);
-		}
+			if(i == 1) {
+				SPI2_TX(interrupt_char);
+			} else {
+				SPI2_TX(temp);
+			}
+			
 		++i;
 		//Seperate packet
 		CLK_SysTickDelay(DELAY_TIME);
