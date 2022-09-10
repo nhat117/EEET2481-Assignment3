@@ -152,147 +152,157 @@ main.c(9): warning: this function declaration is not a prototype [-Wstrict-proto
 char UART0_GetChar();
                   ^
                    void
-main.c(19): warning: no previous extern declaration for non-static variable 'cur' [-Wmissing-variable-declarations]
-        int cur = 0;
-            ^
-main.c(19): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-        int cur = 0;
-        ^
-main.c(21): warning: no previous extern declaration for non-static variable 'flag' [-Wmissing-variable-declarations]
-        int flag = 0;
-            ^
+main.c(20): warning: no previous extern declaration for non-static variable 'cur' [-Wmissing-variable-declarations]
+volatile int cur = 0;
+             ^
+main.c(20): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+volatile int cur = 0;
+         ^
+main.c(21): warning: no previous extern declaration for non-static variable 'line' [-Wmissing-variable-declarations]
+volatile char line[132] = {'x'};
+              ^
 main.c(21): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-        int flag = 0;
-        ^
-main.c(39): warning: implicit conversion loses integer precision: 'volatile uint32_t' (aka 'volatile unsigned int') to 'char' [-Wimplicit-int-conversion]
-                                        ReceivedByte = UART0->DATA;
-                                                     ~ ~~~~~~~^~~~
-main.c(57): warning: implicit declaration of function 'printC' is invalid in C99 [-Wimplicit-function-declaration]
-                                        printC(0,0,ReceivedByte);
+volatile char line[132] = {'x'};
+         ^
+main.c(22): warning: no previous extern declaration for non-static variable 'nlcount' [-Wmissing-variable-declarations]
+volatile int nlcount = 0;
+             ^
+main.c(22): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+volatile int nlcount = 0;
+         ^
+main.c(37): warning: implicit conversion loses integer precision: 'volatile uint32_t' (aka 'volatile unsigned int') to 'char' [-Wimplicit-int-conversion]
+                        ReceivedByte = UART0->DATA;
+                                     ~ ~~~~~~~^~~~
+main.c(65): warning: implicit declaration of function 'printS' is invalid in C99 [-Wimplicit-function-declaration]
+                                        printS(0,0,longtitude);
                                         ^
-main.c(72): warning: implicit declaration of function 'printS' is invalid in C99 [-Wimplicit-function-declaration]
-                                        printS(0,40, latitude);
-                                        ^
-main.c(88): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+main.c(84): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
         CLK->CLKSEL0 &= (~(0x07 << 0));
                      ~~  ^~~~~~~~~~~~
-main.c(89): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
+main.c(85): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
         CLK->CLKSEL0 |= (0b111 << 0);    // chose 22.1184Mhz
                          ^
-main.c(91): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+main.c(87): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
         CLK->CLKDIV &= (~0x0F << 0);
                     ~~  ~~~~~~^~~~
-main.c(94): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
+main.c(90): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
         CLK->CLKSEL1 |= (0b11 << 24); // UART0 clock source is 22.1184 MHz
                          ^
-main.c(95): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+main.c(91): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
         CLK->CLKDIV &= ~(0xF << 8); // clock divider is 1
                     ~~ ^~~~~~~~~~~
-main.c(91): warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+main.c(87): warning: shifting a negative signed value is undefined [-Wshift-negative-value]
         CLK->CLKDIV &= (~0x0F << 0);
                         ~~~~~ ^
-main.c(104): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
+main.c(100): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
         PB->PMD &= ~(0b11 << 2);
                      ^
-main.c(104): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+main.c(100): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
         PB->PMD &= ~(0b11 << 2);
                 ~~ ^~~~~~~~~~~~
-main.c(105): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
+main.c(101): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
         PB->PMD |= (0b01 << 2); // PB.1 is output pin
                     ^
-main.c(109): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
+main.c(105): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
         PB->PMD &= ~(0b11 << 0);        // Set Pin Mode for GPB.0(RX - Input)
                      ^
-main.c(109): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+main.c(105): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
         PB->PMD &= ~(0b11 << 0);        // Set Pin Mode for GPB.0(RX - Input)
                 ~~ ^~~~~~~~~~~~
-main.c(112): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
+main.c(108): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
         UART0->LCR |= (0b11 << 0); // 8 data bit
                        ^
-main.c(113): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+main.c(109): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
         UART0->LCR &= ~(1 << 2); // one stop bit        
                    ~~ ^~~~~~~~~
-main.c(114): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+main.c(110): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
         UART0->LCR &= ~(1 << 3); // no parity bit
                    ~~ ^~~~~~~~~
-main.c(117): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-        UART0->FCR &= ~(0xF << 16); // FIFO Trigger Level is 1 byte]
+main.c(114): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+        UART0->FCR &= ~(0xF << 16); // FIFO Trigger Level is 1 byte
                    ~~ ^~~~~~~~~~~~
-main.c(121): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
+main.c(124): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
         UART0->BAUD &= ~(0b11 << 28); // mode 0 
                          ^
-main.c(121): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+main.c(124): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
         UART0->BAUD &= ~(0b11 << 28); // mode 0 
                     ~~ ^~~~~~~~~~~~~
-main.c(122): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+main.c(125): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
         UART0->BAUD &= ~(0xFFFF << 0);
                     ~~ ^~~~~~~~~~~~~~
-main.c(128): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
-        UART0->DATA = ch;
-                    ~ ^~
-main.c(153): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+main.c(146): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
     SPI3->SSR &= ~(1 << 0);
               ~~ ^~~~~~~~~
-main.c(162): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+main.c(155): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
     SPI3->SSR &= ~(1 << 0);
               ~~ ^~~~~~~~~
-main.c(178): warning: '&' within '|' [-Wbitwise-op-parentheses]
+main.c(171): warning: '&' within '|' [-Wbitwise-op-parentheses]
     LCD_command(0x10 | (ColumnAddr >> 4) & 0xF);
                      ~ ~~~~~~~~~~~~~~~~~~^~~~~
-main.c(178): note: place parentheses around the '&' expression to silence this warning
+main.c(171): note: place parentheses around the '&' expression to silence this warning
     LCD_command(0x10 | (ColumnAddr >> 4) & 0xF);
                                          ^
                        (                      )
+main.c(182): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+        SPI3->CNTRL &= ~(1 << 23); //0: disable variable clock feature
+                    ~~ ^~~~~~~~~~
+main.c(183): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+        SPI3->CNTRL &= ~(1 << 22); //0: disable two bits transfer mode
+                    ~~ ^~~~~~~~~~
+main.c(184): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+        SPI3->CNTRL &= ~(1 << 18); //0: select Master mode
+                    ~~ ^~~~~~~~~~
+main.c(185): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+        SPI3->CNTRL &= ~(1 << 17); //0: disable SPI interrupt
+                    ~~ ^~~~~~~~~~
 main.c(187): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-    SPI3->CNTRL &= ~(1 << 23); //0: disable variable clock feature
-                ~~ ^~~~~~~~~~
+        SPI3->CNTRL &= ~(1 << 10); //0: MSB is sent first
+                    ~~ ^~~~~~~~~~
+main.c(188): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
+        SPI3->CNTRL &= ~(0b11 << 8); //00: one transmit/receive word will be executed in one data transfer
+                         ^
 main.c(188): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-    SPI3->CNTRL &= ~(1 << 22); //0: disable two bits transfer mode
-                ~~ ^~~~~~~~~~
+        SPI3->CNTRL &= ~(0b11 << 8); //00: one transmit/receive word will be executed in one data transfer
+                    ~~ ^~~~~~~~~~~~
+main.c(189): warning: binary integer literals are a GNU extension [-Wgnu-binary-literal]
+        SPI3->CNTRL &= ~(0b11111 << 3);
+                         ^
 main.c(189): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-    SPI3->CNTRL &= ~(1 << 18); //0: select Master mode
-                ~~ ^~~~~~~~~~
-main.c(190): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-    SPI3->CNTRL &= ~(1 << 17); //0: disable SPI interrupt    
-                ~~ ^~~~~~~~~~
-main.c(192): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-    SPI3->CNTRL &= ~(1 << 10); //0: MSB is sent first   
-                ~~ ^~~~~~~~~~
-main.c(193): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-    SPI3->CNTRL &= ~(3 << 8); //00: one transmit/receive word will be executed in one data transfer
-                ~~ ^~~~~~~~~
-main.c(195): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-    SPI3->CNTRL &= ~(31 << 3); //Transmit/Receive bit length
-                ~~ ^~~~~~~~~~
-main.c(16): warning: no previous extern declaration for non-static variable 'ReceivedByte' [-Wmissing-variable-declarations]
-        char ReceivedByte;
-             ^
-main.c(16): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-        char ReceivedByte;
-        ^
-main.c(17): warning: no previous extern declaration for non-static variable 'longtitude' [-Wmissing-variable-declarations]
-        volatile char longtitude[9];
-                      ^
+        SPI3->CNTRL &= ~(0b11111 << 3);
+                    ~~ ^~~~~~~~~~~~~~~
+main.c(197): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+        UART0->DATA = ch;
+                    ~ ^~
+main.c(205): warning: no previous prototype for function 'UART02_IRQHandler' [-Wmissing-prototypes]
+void UART02_IRQHandler() {
+     ^
+main.c(205): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void UART02_IRQHandler() {
+^
+static 
+main.c(17): warning: no previous extern declaration for non-static variable 'ReceivedByte' [-Wmissing-variable-declarations]
+volatile char ReceivedByte;
+              ^
 main.c(17): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-        volatile char longtitude[9];
-                 ^
-main.c(18): warning: no previous extern declaration for non-static variable 'latitude' [-Wmissing-variable-declarations]
-        volatile char latitude[10];
-                      ^
+volatile char ReceivedByte;
+         ^
+main.c(18): warning: no previous extern declaration for non-static variable 'longtitude' [-Wmissing-variable-declarations]
+volatile char longtitude[9];
+              ^
 main.c(18): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-        volatile char latitude[10];
-                 ^
-main.c(20): warning: no previous extern declaration for non-static variable 'line' [-Wmissing-variable-declarations]
-        char line[140];
-             ^
-main.c(20): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-        char line[140];
-        ^
-67 warnings generated.
+volatile char longtitude[9];
+         ^
+main.c(19): warning: no previous extern declaration for non-static variable 'latitude' [-Wmissing-variable-declarations]
+volatile char latitude[10];
+              ^
+main.c(19): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+volatile char latitude[10];
+         ^
+69 warnings generated.
 compiling main.c...
 linking...
-Program Size: Code=1612 RO-data=224 RW-data=1564 ZI-data=1288  
-".\Objects\Tutorial2_TestKeil.axf" - 0 Error(s), 67 Warning(s).
+Program Size: Code=1716 RO-data=224 RW-data=1652 ZI-data=1152  
+".\Objects\Tutorial2_TestKeil.axf" - 0 Error(s), 69 Warning(s).
 
 <h2>Software Packages used:</h2>
 

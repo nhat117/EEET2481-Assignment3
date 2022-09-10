@@ -105,7 +105,7 @@ void System_Config(void) {
     SYS_UnlockReg(); // Unlock protected registers
     
     CLK->PWRCON |= (1 << 0);
-  while(!(CLK->CLKSTATUS & HXT_STATUS));
+    while(!(CLK->CLKSTATUS & HXT_STATUS));
     //PLL configuration starts
     CLK->PLLCON &= ~(1 << 19); //0: PLL input is HXT
     CLK->PLLCON &= ~(1 << 16); //PLL in normal mode
@@ -131,6 +131,16 @@ void System_Config(void) {
     CLK->APBCLK |= (0x01 << 28); // enable ADC clock
     
     SYS_LockReg();  // Lock protected registers    
+
+    //Configuring GPIO pins
+ 
+    GPIO_SetMode(PB, BIT15, GPIO_MODE_OUTPUT); // PB15 
+}
+
+void Seven_SEG(void) {
+    GPIO_SetMode(PB, BIT15, GPIO_MODE_OUTPUT);
+    GPIO_SetMode(PB, BIT15, GPIO_MODE_OUTPUT);
+    GPIO_SetMode(PB, BIT15, GPIO_MODE_OUTPUT);
 }
 
 void SPI3_Config(void) {

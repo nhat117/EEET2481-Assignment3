@@ -13,12 +13,13 @@ void LCD_command(unsigned char temp);
 void LCD_data(unsigned char temp);
 void LCD_clear(void);
 void LCD_SetAddress(uint8_t PageAddr, uint8_t ColumnAddr);
-	char ReceivedByte;
-	volatile char longtitude[9];
-	volatile char latitude[10];
-	int cur = 0;
-	char line[140];
-	int flag = 0;
+
+volatile char ReceivedByte;
+volatile char longtitude[9];
+volatile char latitude[10];
+volatile int cur = 0;
+volatile char line[132] = {'x'};
+volatile int nlcount = 0;
 int main(void)
 { 
 	System_Config();
@@ -28,52 +29,47 @@ int main(void)
 	SPI3_Config();
 	LCD_start();
 	LCD_clear();
-	
 
+	
 	while(1)
 	{
-
-			if(!(UART0->FSR & (0x01 << 14)))
-				{
+		if(!(UART0->FSR & (0x01 << 14))) {
+			ReceivedByte = UART0->DATA;
+			UART0_SendChar(ReceivedByte);
+			if (ReceivedByte == '\n') {
+				nlcount++;
+				if (nlcount == 2) {
+					nlcount = 0;
+					cur = 0;
+					PC->DOUT ^= (1 << 12);
+					longtitude[0] = line[22];
+					longtitude[1] = line[23];
+					longtitude[2] = line[24];
+					longtitude[3] = line[25];
+					longtitude[4] = line[26];
+					longtitude[5] = line[27];
+					longtitude[6] = line[28];
+					longtitude[7] = line[29];
+					longtitude[8] = '\0';
 					
-					ReceivedByte = UART0->DATA;
-					flag = 1;
-					/*
-					if (ReceivedByte == '\n') {
-						for (int i = 0; i < 8; i++) {
-							longtitude[i] = line[i + 21];
-						}
-							cur = 0;
-					} else {
-						line[cur++] = ReceivedByte;
-					}
-					print_Line(0, longtitude);
-					*/
-					PC->DOUT ^= (1 << 13);
-					CLK_SysTickDelay(50000);
-				} 
-				if (flag == 1) {
-					LCD_clear();
-					printC(0,0,ReceivedByte);
-					flag = 0;
-					line[cur++] = ReceivedByte;
-
-					/*
-					if (cur >= 22 && cur <= 22 + 7) {
-						longtitude[cur- 22] = ReceivedByte;
-					}
-					*/
-					if (cur >= 31 && cur <= 30 + 9) {
-						latitude[cur - 31] = ReceivedByte;
-					}
-					if (cur == 131) {
-							cur = 0;
-					}
-					printS(0,40, latitude);
-					CLK_SysTickDelay(10000);
+					latitude[0] = line[31];
+					latitude[1] = line[32];
+					latitude[2] = line[33];
+					latitude[3] = line[34];
+					latitude[4] = line[35];
+					latitude[5] = line[36];
+					latitude[6] = line[37];
+					latitude[7] = line[38];
+					latitude[8] = line[39];
+					latitude[9] = '\0';
+					printS(0,0,longtitude);
+					printS(0,40,latitude);
 				}
-
-
+			} else {
+				line[cur] = ReceivedByte;
+				cur++;
+			}
+		}
 	}
 }
 
@@ -114,7 +110,14 @@ void UART0_Config(void) {
 	UART0->LCR &= ~(1 << 3); // no parity bit
 	UART0->FCR |= (1 << 1); // clear RX FIFO
 	UART0->FCR |= (1 << 2); // clear TX FIFO
-	UART0->FCR &= ~(0xF << 16); // FIFO Trigger Level is 1 byte]
+	
+	UART0->FCR &= ~(0xF << 16); // FIFO Trigger Level is 1 byte
+	//UART0->FCR &= ~(0xF << 4);
+	//UART0->FCR |= (0b0010 << 4);
+	
+	//UART0->IER |= (1 << 0); // receive data available interrupt enable
+	//NVIC->ISER[0] |= (1 << 12);
+	//NVIC->IP[3] &= ~(0b11 << 6);
 	
 	//Baud rate config: BRD/A = 1, DIV_X_EN=0
 	//--> Mode 0, Baud rate = UART_CLK/[16*(A+2)] = 22.1184 MHz/[16*(1+2)]= 460800 bps
@@ -122,16 +125,6 @@ void UART0_Config(void) {
 	UART0->BAUD &= ~(0xFFFF << 0);
 	UART0->BAUD |= 70;
 }
-
-void UART0_SendChar(int ch){
-	while(UART0->FSR & (0x01 << 23)); //wait until TX FIFO is not full
-	UART0->DATA = ch;
-	if(ch == '\n'){								// \n is new line
-		while(UART0->FSR & (0x01 << 23));
-		UART0->DATA = '\r';						// '\r' - Carriage return
-	}
-}
-
 
 void LCD_start(void)
 {
@@ -180,28 +173,40 @@ void LCD_SetAddress(uint8_t PageAddr, uint8_t ColumnAddr)
 }
 
 void SPI3_Config(void) {
-    SYS->GPD_MFP |= 1 << 11; //1: PD11 is configured for SPI3
-    SYS->GPD_MFP |= 1 << 9; //1: PD9 is configured for SPI3
-    SYS->GPD_MFP |= 1 << 8; //1: PD8 is configured for SPI3
+	GPIO_SetMode(PD,BIT8,GPIO_MODE_OUTPUT);
+	GPIO_SetMode(PD,BIT9,GPIO_MODE_OUTPUT);
+	GPIO_SetMode(PD,BIT11,GPIO_MODE_OUTPUT);
+	SYS->GPD_MFP |= 1 << 11; //1: PD11 is configured for alternative function
+	SYS->GPD_MFP |= 1 << 9; //1: PD9 is configured for alternative function
+	SYS->GPD_MFP |= 1 << 8; //1: PD8 is configured for alternative function
+	SPI3->CNTRL &= ~(1 << 23); //0: disable variable clock feature
+	SPI3->CNTRL &= ~(1 << 22); //0: disable two bits transfer mode
+	SPI3->CNTRL &= ~(1 << 18); //0: select Master mode
+	SPI3->CNTRL &= ~(1 << 17); //0: disable SPI interrupt
+	SPI3->CNTRL |= 1 << 11; //1: SPI clock idle high
+	SPI3->CNTRL &= ~(1 << 10); //0: MSB is sent first
+	SPI3->CNTRL &= ~(0b11 << 8); //00: one transmit/receive word will be executed in one data transfer
+	SPI3->CNTRL &= ~(0b11111 << 3);
+	SPI3->CNTRL |= 9 << 3; //9 bits/word
+	SPI3->CNTRL |= (1 << 2);  //1: Transmit at negative edge of SPI CLK
+	SPI3->DIVIDER = 24;
+}
 
-    SPI3->CNTRL &= ~(1 << 23); //0: disable variable clock feature
-    SPI3->CNTRL &= ~(1 << 22); //0: disable two bits transfer mode
-    SPI3->CNTRL &= ~(1 << 18); //0: select Master mode
-    SPI3->CNTRL &= ~(1 << 17); //0: disable SPI interrupt    
-    SPI3->CNTRL |= 1 << 11; //1: SPI clock idle high 
-    SPI3->CNTRL &= ~(1 << 10); //0: MSB is sent first   
-    SPI3->CNTRL &= ~(3 << 8); //00: one transmit/receive word will be executed in one data transfer
+void UART0_SendChar(int ch){
+	while(UART0->FSR & (0x01 << 23)); //wait until TX FIFO is not full
+	UART0->DATA = ch;
+	if (ch == '\n') { // \n is new line
+		while(UART0->FSR & (0x01 << 23));
+		UART0->DATA = '\r'; // '\r' - Carriage
+		return;
+	}
+}
 
-    SPI3->CNTRL &= ~(31 << 3); //Transmit/Receive bit length
-    SPI3->CNTRL |= 9 << 3;     //9: 9 bits transmitted/received per data transfer
-
-    SPI3->CNTRL |= (1 << 2);  //1: Transmit at negative edge of SPI CLK       
-    SPI3->DIVIDER = 0; // SPI clock divider. SPI clock = HCLK / ((DIVID-ER+1)*2). HCLK = 50 MHz
+void UART02_IRQHandler() {
+	//ReceivedByte = UART0->RBR;
+	//flag = 1;
+	//PC->DOUT ^= 1 << 15;
 
 }
 
-
-
-
-	
 //------------------------------------------- main.c CODE ENDS ---------------------------------------------------------------------------
