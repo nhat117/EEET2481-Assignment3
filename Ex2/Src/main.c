@@ -38,8 +38,8 @@ int main(void)
 		if(!(UART0->FSR & (0x01 << 14))) {
 			ReceivedByte = UART0->DATA; //Read data from UART0
 			
-			// UART0_SendChar(ReceivedByte); //For Debugging
-			// UART0_SendChar('0'); //Terminate character
+			UART0_SendChar(ReceivedByte); //For Debugging
+			UART0_SendChar('0'); //Terminate character
 			
 			if (ReceivedByte == '\n') {
 				nlcount++;
@@ -47,8 +47,8 @@ int main(void)
 					nlcount = 0;
 					cur = 0;
 					PC->DOUT ^= (1 << 12);
-					UART0_SendChar(line[22]); //S
-					UART0_SendChar(line[23]);//3
+					//UART0_SendChar(line[22]); //S
+					//UART0_SendChar(line[23]);//3
 					longtitude[0] = line[22];
 					longtitude[1] = line[23];
 					longtitude[2] = line[24];
@@ -59,7 +59,8 @@ int main(void)
 					longtitude[7] = line[29];
 					longtitude[8] = '\0';
 					/////Latitude code part
-					UART0_SendChar(line[31]); //E
+					//UART0_SendChar(line[31]); //E
+					//Can be verify with UART USB Using terminal software
 					latitude[0] = line[31];
 					latitude[1] = line[32];
 					latitude[2] = line[33];
