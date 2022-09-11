@@ -5,6 +5,7 @@
 
 void System_Config(void);
 void UART0_Config(void);
+void UART0_CLKConfig(void);
 void UART0_SendChar(int ch);
 char UART0_GetChar();
 void SPI3_Config(void);
@@ -20,6 +21,7 @@ volatile char latitude[10];
 volatile int cur = 0;
 volatile char line[132] = {'x'};
 volatile int nlcount = 0;
+
 int main(void)
 { 
 	System_Config();
@@ -34,14 +36,19 @@ int main(void)
 	while(1)
 	{
 		if(!(UART0->FSR & (0x01 << 14))) {
-			ReceivedByte = UART0->DATA;
-			UART0_SendChar(ReceivedByte);
+			ReceivedByte = UART0->DATA; //Read data from UART0
+			
+			// UART0_SendChar(ReceivedByte); //For Debugging
+			// UART0_SendChar('0'); //Terminate character
+			
 			if (ReceivedByte == '\n') {
 				nlcount++;
 				if (nlcount == 2) {
 					nlcount = 0;
 					cur = 0;
 					PC->DOUT ^= (1 << 12);
+					UART0_SendChar(line[22]); //S
+					UART0_SendChar(line[23]);//3
 					longtitude[0] = line[22];
 					longtitude[1] = line[23];
 					longtitude[2] = line[24];
@@ -51,7 +58,8 @@ int main(void)
 					longtitude[6] = line[28];
 					longtitude[7] = line[29];
 					longtitude[8] = '\0';
-					
+					/////Latitude code part
+					UART0_SendChar(line[31]); //E
 					latitude[0] = line[31];
 					latitude[1] = line[32];
 					latitude[2] = line[33];
@@ -87,12 +95,17 @@ void System_Config (void){
 	CLK->CLKDIV &= (~0x0F << 0);
 
 	//UART0 Clock selection and configuration
-	CLK->CLKSEL1 |= (0b11 << 24); // UART0 clock source is 22.1184 MHz
-	CLK->CLKDIV &= ~(0xF << 8); // clock divider is 1
-	CLK->APBCLK |= (1 << 16); // enable UART0 clock
+	UART0_CLKConfig();
 	CLK->APBCLK |= (1 << 15); // enable spi3
 
 	SYS_LockReg();  // Lock protected registers    
+}
+
+////////////////////UART Config/////////////////////////////////////
+void UART0_CLKConfig(void) {
+	CLK->CLKSEL1 |= (0b11 << 24); // UART0 clock source is 22.1184 MHz
+	CLK->CLKDIV &= ~(0xF << 8); // clock divider is 1
+	CLK->APBCLK |= (1 << 16); // enable UART0 clock
 }
 
 void UART0_Config(void) {
@@ -112,12 +125,6 @@ void UART0_Config(void) {
 	UART0->FCR |= (1 << 2); // clear TX FIFO
 	
 	UART0->FCR &= ~(0xF << 16); // FIFO Trigger Level is 1 byte
-	//UART0->FCR &= ~(0xF << 4);
-	//UART0->FCR |= (0b0010 << 4);
-	
-	//UART0->IER |= (1 << 0); // receive data available interrupt enable
-	//NVIC->ISER[0] |= (1 << 12);
-	//NVIC->IP[3] &= ~(0b11 << 6);
 	
 	//Baud rate config: BRD/A = 1, DIV_X_EN=0
 	//--> Mode 0, Baud rate = UART_CLK/[16*(A+2)] = 22.1184 MHz/[16*(1+2)]= 460800 bps
@@ -126,6 +133,16 @@ void UART0_Config(void) {
 	UART0->BAUD |= 70;
 }
 
+void UART0_SendChar(int ch){
+	while(UART0->FSR & (0x01 << 23)); //wait until TX FIFO is not full
+	UART0->DATA = ch;
+	if (ch == '\n') { // \n is new line
+		while(UART0->FSR & (0x01 << 23));
+		UART0->DATA = '\r'; // '\r' - Carriage
+		return;
+	}
+}
+///////////////////////////////////LCD Config/////////////////////////////////////
 void LCD_start(void)
 {
     LCD_command(0xE2); // Set system reset
@@ -190,23 +207,6 @@ void SPI3_Config(void) {
 	SPI3->CNTRL |= 9 << 3; //9 bits/word
 	SPI3->CNTRL |= (1 << 2);  //1: Transmit at negative edge of SPI CLK
 	SPI3->DIVIDER = 24;
-}
-
-void UART0_SendChar(int ch){
-	while(UART0->FSR & (0x01 << 23)); //wait until TX FIFO is not full
-	UART0->DATA = ch;
-	if (ch == '\n') { // \n is new line
-		while(UART0->FSR & (0x01 << 23));
-		UART0->DATA = '\r'; // '\r' - Carriage
-		return;
-	}
-}
-
-void UART02_IRQHandler() {
-	//ReceivedByte = UART0->RBR;
-	//flag = 1;
-	//PC->DOUT ^= 1 << 15;
-
 }
 
 //------------------------------------------- main.c CODE ENDS ---------------------------------------------------------------------------
