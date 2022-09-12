@@ -419,19 +419,59 @@
               <FilePath>.\spi.c</FilePath>
             </File>
             <File>
-              <FileName>keymatrix.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\keymatrix.h</FilePath>
-            </File>
-            <File>
-              <FileName>keymatrix.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\keymatrix.c</FilePath>
-            </File>
-            <File>
               <FileName>7seg.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\7seg.h</FilePath>
+            </File>
+            <File>
+              <FileName>7seg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\7seg.c</FilePath>
+            </File>
+            <File>
+              <FileName>sysconf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\sysconf.h</FilePath>
+            </File>
+            <File>
+              <FileName>sysconf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sysconf.c</FilePath>
+            </File>
+            <File>
+              <FileName>uartconf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\uartconf.h</FilePath>
+            </File>
+            <File>
+              <FileName>uartconf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\uartconf.c</FilePath>
+            </File>
+            <File>
+              <FileName>lcdconf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lcdconf.c</FilePath>
+            </File>
+            <File>
+              <FileName>lcdconf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\lcdconf.h</FilePath>
+            </File>
+            <File>
+              <FileName>variable.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\variable.h</FilePath>
+            </File>
+            <File>
+              <FileName>keypad.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\keypad.h</FilePath>
+            </File>
+            <File>
+              <FileName>keypad.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\keypad.c</FilePath>
             </File>
           </Files>
         </Group>

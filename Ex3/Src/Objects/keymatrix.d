@@ -26,4 +26,4 @@
   C:\Keil_v5\Library\StdDriver\Include\SC.h \
   C:\Keil_v5\Library\StdDriver\Include\PS2.h \
   C:\Keil_v5\Library\StdDriver\Include\CLK.h \
-  C:\Keil_v5\Library\StdDriver\Include\ACMP.h 7seg.h
+  C:\Keil_v5\Library\StdDriver\Include\ACMP.h 7seg.h variable.h

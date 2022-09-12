@@ -1,4 +1,5 @@
-
+#ifndef SEVENSEG_INCLUDED
+#define SEVENSEG_INCLUDED
 int pattern[] = {
                //   gedbaf_dot_c
                   0b10000010,  //Number 0          // ---a----
@@ -14,3 +15,4 @@ int pattern[] = {
                   0b11111111   //Blank LED 
                 }; 
 
+#endif
