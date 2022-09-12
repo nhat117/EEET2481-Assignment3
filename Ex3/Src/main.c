@@ -1,60 +1,166 @@
 //------------------------------------------- main.c CODE STARTS ---------------------------------------------------------------------------
 #include <stdio.h>
+#include "keymatrix.h"
 #include "NUC100Series.h"
-#include "LCD.h"
 
-#define HXT_STATUS 1<<0
-#define PLL_STATUS 1<<2
+#define C3_pressed (!(PA->PIN & (1<<0)))		
+#define C2_pressed (!(PA->PIN & (1<<1)))
+#define C1_pressed (!(PA->PIN & (1<<2)))
 
 void System_Config(void);
+void UART0_Config(void);
+void UART0_CLKConfig(void);
+void UART0_SendChar(int ch);
+char UART0_GetChar();
 void SPI3_Config(void);
-void ADC7_Config(void);
-
 void LCD_start(void);
 void LCD_command(unsigned char temp);
 void LCD_data(unsigned char temp);
 void LCD_clear(void);
 void LCD_SetAddress(uint8_t PageAddr, uint8_t ColumnAddr);
+void GPB15_Config(void);
+
+volatile char ReceivedByte;   
+
+volatile int game_board[8][8] = {
+	{0,0,0,0,0,0,0,0},
+	{0,1,1,0,0,0,0,0},
+	{0,0,0,0,0,0,1,0},
+	{0,0,0,0,0,0,1,0},
+	{0,0,1,1,0,0,0,0},
+	{0,0,0,0,0,0,0,0},
+	{1,1,0,0,1,0,0,0},
+	{0,0,0,0,1,0,0,0}
+};
+
+volatile int player_board[8][8] = {
+	{0,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,0,0}
+};
+
+enum game_state{WELCOME, LOAD, GAME};
 
 int main(void)
-{
-    uint32_t adc7_val;
-    char adc7_val_s[4] = "0000";
+{ 
+	System_Config();
+	UART0_Config();
+	GPIO_SetMode(PC,BIT12,GPIO_MODE_OUTPUT);
+	GPIO_SetMode(PC,BIT13,GPIO_MODE_OUTPUT);
+	GPB15_Config();
+	SPI3_Config();
+	LCD_start();
+	LCD_clear();
 
-    System_Config();
-    SPI3_Config();
-    ADC7_Config();
-
-    LCD_start();
-    LCD_clear();
-
-    //--------------------------------
-    //LCD static content
-    //--------------------------------
-
-    printS_5x7(2, 0, "EEET2481 Lab 7 ADC");
-    printS_5x7(2, 8, "ADC7 conversion test");
-    printS_5x7(2, 16, "Reference voltage: 5 V");
-    printS_5x7(2, 24, "A/D resolution: 1.221 mV");
-    printS_5x7(2, 40, "A/D value:");
-
-    ADC->ADCR |= (1 << 11); // start ADC channel 7 conversion
-
-    while (1) {
-        while (!(ADC->ADSR & (1 << 0))); // wait until conversion is completed (ADF=1)
-        ADC->ADSR |= (1 << 0); // write 1 to clear ADF
-        adc7_val = ADC->ADDR[7] & 0x0000FFFF;
-        sprintf(adc7_val_s, "%d", adc7_val);
-        printS_5x7(4 + 5 * 10, 40, "    ");
-        printS_5x7(4 + 5 * 10, 40, adc7_val_s);
-        CLK_SysTickDelay(2000000);
-    }
+	
+	while(1)
+	{
+		handleKeymatrix();
+	}
 }
 
-//------------------------------------------------------------------------------------------------------------------------------------
-// Functions definition
-//------------------------------------------------------------------------------------------------------------------------------------
 
+
+void System_Config (void){
+	
+	
+	SYS_UnlockReg(); // Unlock protected registers
+
+	// enable clock sources
+	CLK->PWRCON |= (1 << 2);
+	while(!(CLK->CLKSTATUS & (1 << 4)));
+	CLK->PLLCON |= (1<<18); //disable PLLOUT
+	// CPU clock source selection
+	CLK->CLKSEL0 &= (~(0x07 << 0));
+	CLK->CLKSEL0 |= (0b111 << 0);    // chose 22.1184Mhz
+	//clock frequency division
+	CLK->CLKDIV &= (~0x0F << 0);
+
+	//UART0 Clock selection and configuration
+	UART0_CLKConfig();
+	CLK->APBCLK |= (1 << 15); // enable spi3
+
+	SYS_LockReg();  // Lock protected registers    
+	
+	    
+	//Configure GPIO for Key Matrix
+	//Rows - outputs
+	PA->PMD &= (~(0b11<< 6));
+  PA->PMD |= (0b01 << 6);    
+	PA->PMD &= (~(0b11<< 8));
+  PA->PMD |= (0b01 << 8);  		
+	PA->PMD &= (~(0b11<< 10));
+  PA->PMD |= (0b01 << 10);  
+		
+		//Updated - We will keep the Column as default(after reset) in quasi-mode instead of inputs
+//	//COLUMN - 
+//	PA->PMD &= (~(0b11<< 0));		
+//	PA->PMD &= (~(0b11<< 2));		
+//	PA->PMD &= (~(0b11<< 4));		
+		
+	//Configure GPIO for 7segment
+	//Set mode for PC4 to PC7 
+  PC->PMD &= (~(0xFF<< 8));		//clear PMD[15:8] 
+  PC->PMD |= (0b01010101 << 8);   //Set output push-pull for PC4 to PC7
+	//Set mode for PE0 to PE7
+	PE->PMD &= (~(0xFFFF<< 0));		//clear PMD[15:0] 
+	PE->PMD |= 0b0101010101010101<<0;   //Set output push-pull for PE0 to PE7
+	
+	//Select the first digit U11
+	PC->DOUT |= (1<<7);     //Logic 1 to turn on the digit
+	PC->DOUT &= ~(1<<6);		//SC3
+	PC->DOUT &= ~(1<<5);		//SC2
+	PC->DOUT &= ~(1<<4);		//SC1		
+
+}
+
+////////////////////UART Config/////////////////////////////////////
+void UART0_CLKConfig(void) {
+	CLK->CLKSEL1 |= (0b11 << 24); // UART0 clock source is 22.1184 MHz
+	CLK->CLKDIV &= ~(0xF << 8); // clock divider is 1
+	CLK->APBCLK |= (1 << 16); // enable UART0 clock
+}
+
+void UART0_Config(void) {
+	// UART0 pin configuration. PB.1 pin is for UART0 TX
+	PB->PMD &= ~(0b11 << 2);
+	PB->PMD |= (0b01 << 2); // PB.1 is output pin
+	SYS->GPB_MFP |= (1 << 1); // GPB_MFP[1] = 1 -> PB.1 is UART0 TX pin
+	
+	SYS->GPB_MFP |= (1 << 0); // GPB_MFP[0] = 1 -> PB.0 is UART0 RX pin	
+	PB->PMD &= ~(0b11 << 0);	// Set Pin Mode for GPB.0(RX - Input)
+
+	// UART0 operation configuration
+	UART0->LCR |= (0b11 << 0); // 8 data bit
+	UART0->LCR &= ~(1 << 2); // one stop bit	
+	UART0->LCR &= ~(1 << 3); // no parity bit
+	UART0->FCR |= (1 << 1); // clear RX FIFO
+	UART0->FCR |= (1 << 2); // clear TX FIFO
+	
+	UART0->FCR &= ~(0xF << 16); // FIFO Trigger Level is 1 byte
+	
+	//Baud rate config: BRD/A = 1, DIV_X_EN=0
+	//--> Mode 0, Baud rate = UART_CLK/[16*(A+2)] = 22.1184 MHz/[16*(1+2)]= 460800 bps
+	UART0->BAUD &= ~(0b11 << 28); // mode 0	
+	UART0->BAUD &= ~(0xFFFF << 0);
+	UART0->BAUD |= 70;
+}
+
+void UART0_SendChar(int ch){
+	while(UART0->FSR & (0x01 << 23)); //wait until TX FIFO is not full
+	UART0->DATA = ch;
+	if (ch == '\n') { // \n is new line
+		while(UART0->FSR & (0x01 << 23));
+		UART0->DATA = '\r'; // '\r' - Carriage
+		return;
+	}
+}
+///////////////////////////////////LCD Config/////////////////////////////////////
 void LCD_start(void)
 {
     LCD_command(0xE2); // Set system reset
@@ -101,82 +207,40 @@ void LCD_SetAddress(uint8_t PageAddr, uint8_t ColumnAddr)
     LCD_command(0x00 | (ColumnAddr & 0xF));
 }
 
-void System_Config(void) {
-    SYS_UnlockReg(); // Unlock protected registers
-    
-    CLK->PWRCON |= (1 << 0);
-    while(!(CLK->CLKSTATUS & HXT_STATUS));
-    //PLL configuration starts
-    CLK->PLLCON &= ~(1 << 19); //0: PLL input is HXT
-    CLK->PLLCON &= ~(1 << 16); //PLL in normal mode
-    CLK->PLLCON &= (~(0x01FF << 0));
-    CLK->PLLCON |= 48;
-    CLK->PLLCON &= ~(1 << 18); //0: enable PLLOUT
-    while(!(CLK->CLKSTATUS & PLL_STATUS));
-    //PLL configuration ends
-    
-    //clock source selection
-    CLK->CLKSEL0 &= (~(0x07 << 0));
-    CLK->CLKSEL0 |= (0x02 << 0);
-    //clock frequency division
-    CLK->CLKDIV &= (~0x0F << 0);
-    
-    // SPI3 clock enable
-    CLK->APBCLK |= 1 << 15;
-    
-    //ADC Clock selection and configuration
-    CLK->CLKSEL1 &= ~(0x03 << 2); // ADC clock source is 12 MHz
-    CLK->CLKDIV &= ~(0x0FF << 16);
-    CLK->CLKDIV |= (0x0B << 16); // ADC clock divider is (11+1) --> ADC clock is 12/12 = 1 MHz
-    CLK->APBCLK |= (0x01 << 28); // enable ADC clock
-    
-    SYS_LockReg();  // Lock protected registers    
-
-    //Configuring GPIO pins
- 
-    GPIO_SetMode(PB, BIT15, GPIO_MODE_OUTPUT); // PB15 
-}
-
-void Seven_SEG(void) {
-    GPIO_SetMode(PB, BIT15, GPIO_MODE_OUTPUT);
-    GPIO_SetMode(PB, BIT15, GPIO_MODE_OUTPUT);
-    GPIO_SetMode(PB, BIT15, GPIO_MODE_OUTPUT);
-}
-
 void SPI3_Config(void) {
-    SYS->GPD_MFP |= 1 << 11; //1: PD11 is configured for SPI3
-    SYS->GPD_MFP |= 1 << 9; //1: PD9 is configured for SPI3
-    SYS->GPD_MFP |= 1 << 8; //1: PD8 is configured for SPI3
+	GPIO_SetMode(PD,BIT8,GPIO_MODE_OUTPUT);
+	GPIO_SetMode(PD,BIT9,GPIO_MODE_OUTPUT);
+	GPIO_SetMode(PD,BIT11,GPIO_MODE_OUTPUT);
+	SYS->GPD_MFP |= 1 << 11; //1: PD11 is configured for alternative function
+	SYS->GPD_MFP |= 1 << 9; //1: PD9 is configured for alternative function
+	SYS->GPD_MFP |= 1 << 8; //1: PD8 is configured for alternative function
+	SPI3->CNTRL &= ~(1 << 23); //0: disable variable clock feature
+	SPI3->CNTRL &= ~(1 << 22); //0: disable two bits transfer mode
+	SPI3->CNTRL &= ~(1 << 18); //0: select Master mode
+	SPI3->CNTRL &= ~(1 << 17); //0: disable SPI interrupt
+	SPI3->CNTRL |= 1 << 11; //1: SPI clock idle high
+	SPI3->CNTRL &= ~(1 << 10); //0: MSB is sent first
+	SPI3->CNTRL &= ~(0b11 << 8); //00: one transmit/receive word will be executed in one data transfer
+	SPI3->CNTRL &= ~(0b11111 << 3);
+	SPI3->CNTRL |= 9 << 3; //9 bits/word
+	SPI3->CNTRL |= (1 << 2);  //1: Transmit at negative edge of SPI CLK
+	SPI3->DIVIDER = 24;
+}
+//SW_INT 1 Config
 
-    SPI3->CNTRL &= ~(1 << 23); //0: disable variable clock feature
-    SPI3->CNTRL &= ~(1 << 22); //0: disable two bits transfer mode
-    SPI3->CNTRL &= ~(1 << 18); //0: select Master mode
-    SPI3->CNTRL &= ~(1 << 17); //0: disable SPI interrupt    
-    SPI3->CNTRL |= 1 << 11; //1: SPI clock idle high 
-    SPI3->CNTRL &= ~(1 << 10); //0: MSB is sent first   
-    SPI3->CNTRL &= ~(3 << 8); //00: one transmit/receive word will be executed in one data transfer
-
-    SPI3->CNTRL &= ~(31 << 3); //Transmit/Receive bit length
-    SPI3->CNTRL |= 9 << 3;     //9: 9 bits transmitted/received per data transfer
-
-    SPI3->CNTRL |= (1 << 2);  //1: Transmit at negative edge of SPI CLK       
-    SPI3->DIVIDER = 0; // SPI clock divider. SPI clock = HCLK / ((DIVID-ER+1)*2). HCLK = 50 MHz
+void GPB15_Config(void) {
+ PB->PMD &= (~(0b11 << 30));
+ PB->IMD &= (~(1 << 15));
+ PB->IEN |= (1 << 15); //Enable interrupt	
+	NVIC->ISER[0] |= 1<<3;
+	NVIC->IP[0] &= (~(0b11<<30));
+	
 }
 
-void ADC7_Config(void) {
-    PA->PMD &= ~(0b11 << 14);
-    PA->PMD |= (0b01 << 14); // PA.7 is input pin
-    PA->OFFD |= (0x01 << 7); // PA.7 digital input path is disabled
-    SYS->GPA_MFP |= (1 << 7); // GPA_MFP[7] = 1 for ADC7
-    SYS->ALT_MFP &= ~(1 << 11); //ALT_MFP[11] = 0 for ADC7
-
-    //ADC operation configuration
-    ADC->ADCR |= (0b11 << 2);  // continuous scan mode
-    ADC->ADCR &= ~(1 << 1); // ADC interrupt is disabled
-    ADC->ADCR |= (0x01 << 0); // ADC is enabled
-    ADC->ADCHER &= ~(0b11 << 8); // ADC7 input source is external pin
-    ADC->ADCHER |= (1 << 7); // ADC channel 7 is enabled.
+void EINT1_IRQHandler(void){
+//Do something
+	PC->DOUT ^= 1<<12;
+	PB->ISRC |= (1 << 15);
 }
+
 //------------------------------------------- main.c CODE ENDS ---------------------------------------------------------------------------
-
-

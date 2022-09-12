@@ -418,6 +418,21 @@
               <FileType>1</FileType>
               <FilePath>.\spi.c</FilePath>
             </File>
+            <File>
+              <FileName>keymatrix.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\keymatrix.h</FilePath>
+            </File>
+            <File>
+              <FileName>keymatrix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\keymatrix.c</FilePath>
+            </File>
+            <File>
+              <FileName>7seg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\7seg.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

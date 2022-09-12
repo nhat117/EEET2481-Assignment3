@@ -20,7 +20,7 @@ volatile char longtitude[9];
 volatile char latitude[10];
 volatile int cur = 0;
 volatile char line[132] = {'x'};
-volatile int nlcount = 0;
+volatile int end_flag = 0;
 
 int main(void)
 { 
@@ -38,44 +38,43 @@ int main(void)
 		if(!(UART0->FSR & (0x01 << 14))) {
 			ReceivedByte = UART0->DATA; //Read data from UART0
 			
-			UART0_SendChar(ReceivedByte); //For Debugging
-			UART0_SendChar('0'); //Terminate character
+			//UART0_SendChar(ReceivedByte); //For Debugging
+			//UART0_SendChar('0'); //Terminate character
 			
-			if (ReceivedByte == '\n') {
-				nlcount++;
-				if (nlcount == 2) {
-					nlcount = 0;
+			if (ReceivedByte == '\r') { // End of the package
+				end_flag++;
+				if (end_flag == 1) {
+					end_flag = 0; // Reset flag
 					cur = 0;
-					PC->DOUT ^= (1 << 12);
 					//UART0_SendChar(line[22]); //S
 					//UART0_SendChar(line[23]);//3
-					longtitude[0] = line[22];
-					longtitude[1] = line[23];
-					longtitude[2] = line[24];
-					longtitude[3] = line[25];
-					longtitude[4] = line[26];
-					longtitude[5] = line[27];
-					longtitude[6] = line[28];
-					longtitude[7] = line[29];
+					longtitude[0] = line[21];
+					longtitude[1] = line[22];
+					longtitude[2] = line[23];
+					longtitude[3] = line[24];
+					longtitude[4] = line[25];
+					longtitude[5] = line[26];
+					longtitude[6] = line[27];
+					longtitude[7] = line[28];
 					longtitude[8] = '\0';
 					/////Latitude code part
 					//UART0_SendChar(line[31]); //E
 					//Can be verify with UART USB Using terminal software
-					latitude[0] = line[31];
-					latitude[1] = line[32];
-					latitude[2] = line[33];
-					latitude[3] = line[34];
-					latitude[4] = line[35];
-					latitude[5] = line[36];
-					latitude[6] = line[37];
-					latitude[7] = line[38];
-					latitude[8] = line[39];
+					latitude[0] = line[30];
+					latitude[1] = line[31];
+					latitude[2] = line[32];
+					latitude[3] = line[33];
+					latitude[4] = line[34];
+					latitude[5] = line[35];
+					latitude[6] = line[36];
+					latitude[7] = line[37];
+					latitude[8] = line[38];
 					latitude[9] = '\0';
 					printS(0,0,longtitude);
 					printS(0,40,latitude);
 				}
-			} else {
-				line[cur] = ReceivedByte;
+			} else { // Sample new package
+				line[cur] = ReceivedByte; 
 				cur++;
 			}
 		}
