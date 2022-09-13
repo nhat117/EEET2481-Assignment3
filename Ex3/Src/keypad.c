@@ -44,7 +44,7 @@ int search_col1(void)
 		PA->DOUT |= (1<<3);
 		PA->DOUT |= (1<<4);		
 		PA->DOUT &= ~(1<<5);
-CLK_SysTickDelay(2000);				 
+		CLK_SysTickDelay(2000);				 
     if (C1_pressed)
     {
         // If column1 is LOW, detect key press as K7 (KEY 7)
@@ -103,10 +103,11 @@ int search_col2(void)
 int search_col3(void)
 {
     // Drive ROW1 output pin as LOW. Other ROW pins as HIGH
+
 		PA->DOUT &= ~(1<<3);
 		PA->DOUT |= (1<<4);
 		PA->DOUT |= (1<<5);
-    CLK_SysTickDelay(2000);
+	  CLK_SysTickDelay(2000);
     if (C3_pressed)
     {
         // If column3 is LOW, detect key press as K3 (KEY 3)
@@ -118,7 +119,7 @@ int search_col3(void)
 		PA->DOUT |= (1<<3);
 		PA->DOUT &= ~(1<<4);
 		PA->DOUT |= (1<<5);
-		CLK_SysTickDelay(2000);
+	  CLK_SysTickDelay(2000);
     if (C3_pressed)
     {
         // If column3 is LOW, detect key press as K6 (KEY 6)
@@ -126,11 +127,11 @@ int search_col3(void)
     }
 		else
 		{
-    // Drive ROW3 output pin as LOW. Other ROW pins as HIGH
+    // Drive ROW3 output pin as LOW. Other ROW pins as HIGH	
 		PA->DOUT |= (1<<3);
 		PA->DOUT |= (1<<4);		
 		PA->DOUT &= ~(1<<5);	
-		CLK_SysTickDelay(2000);			
+	  CLK_SysTickDelay(2000);			
     if (C3_pressed)
     {
         // If column3 is LOW, detect key press as K9 (KEY 9)
@@ -159,7 +160,7 @@ void handleKeymatrix() {
 					}
 				}
 
-				
+				CLK_SysTickDelay(1000);
 			}
 		else if(C2_pressed) 
 			{
@@ -171,7 +172,7 @@ void handleKeymatrix() {
 						current_y = temp;
 					}				
 				}
-
+				CLK_SysTickDelay(1000);
 			}	
 		else if(C3_pressed) 
 			{
