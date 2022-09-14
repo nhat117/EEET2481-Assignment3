@@ -10,20 +10,23 @@ void UART0_SendChar(int ch);
 char UART0_GetChar();
 void SPI3_Config(void);
 void LCD_start(void);
+void latitudeHandler(void);
+void longtitudeHandler(void);
 void LCD_command(unsigned char temp);
 void LCD_data(unsigned char temp);
 void LCD_clear(void);
 void LCD_SetAddress(uint8_t PageAddr, uint8_t ColumnAddr);
 
 volatile char ReceivedByte;
-volatile char longtitude[9];
-volatile char latitude[10];
+volatile char latitude[9];
+volatile char longtitude[10];
 volatile int cur = 0;
 volatile char line[132] = {'x'};
 volatile int end_flag = 0;
 
 int main(void)
 { 
+	//Configuration
 	System_Config();
 	UART0_Config();
 	GPIO_SetMode(PC,BIT12,GPIO_MODE_OUTPUT);
@@ -32,48 +35,25 @@ int main(void)
 	LCD_start();
 	LCD_clear();
 
-	
+	//Main execution
 	while(1)
 	{
 		if(!(UART0->FSR & (0x01 << 14))) {
 			ReceivedByte = UART0->DATA; //Read data from UART0
-			
-			//UART0_SendChar(ReceivedByte); //For Debugging
-			//UART0_SendChar('0'); //Terminate character
 			
 			if (ReceivedByte == '\r') { // End of the package
 				end_flag++;
 				if (end_flag == 1) {
 					end_flag = 0; // Reset flag
 					cur = 0;
-					//UART0_SendChar(line[22]); //S
-					//UART0_SendChar(line[23]);//3
-					longtitude[0] = line[21];
-					longtitude[1] = line[22];
-					longtitude[2] = line[23];
-					longtitude[3] = line[24];
-					longtitude[4] = line[25];
-					longtitude[5] = line[26];
-					longtitude[6] = line[27];
-					longtitude[7] = line[28];
-					longtitude[8] = '\0';
-					/////Latitude code part
-					//UART0_SendChar(line[31]); //E
-					//Can be verify with UART USB Using terminal software
-					latitude[0] = line[30];
-					latitude[1] = line[31];
-					latitude[2] = line[32];
-					latitude[3] = line[33];
-					latitude[4] = line[34];
-					latitude[5] = line[35];
-					latitude[6] = line[36];
-					latitude[7] = line[37];
-					latitude[8] = line[38];
-					latitude[9] = '\0';
-					printS(0,0,longtitude);
-					printS(0,40,latitude);
+					latitudeHandler();
+					longtitudeHandler();
+					//Display longtitude and latitude
+					printS(0,0,latitude);
+					printS(0,40,longtitude);
 				}
-			} else { // Sample new package
+			} else { 
+				// Sample new package
 				line[cur] = ReceivedByte; 
 				cur++;
 			}
@@ -101,6 +81,24 @@ void System_Config (void){
 	SYS_LockReg();  // Lock protected registers    
 }
 
+////////////////////////////For extracting the packet/////////////////////////////////////////////////////////////
+
+void latitudeHandler(void) {
+	//UART0_SendChar(line[22]); //S
+	//UART0_SendChar(line[23]);//3
+	for (int i = 0; i < 8; i++) {
+		latitude[i] = line[21+i];
+	}
+	latitude[8] = '\0'; //Terminate the string
+}
+
+void longtitudeHandler(void) {
+	//UART0_SendChar(line[30]); //E
+	for (int i = 0; i < 9; i++) {
+		longtitude[i] = line[30+i];
+	}
+	longtitude[9] = '\0'; //Terminate the string
+}
 ////////////////////UART Config/////////////////////////////////////
 void UART0_CLKConfig(void) {
 	CLK->CLKSEL1 |= (0b11 << 24); // UART0 clock source is 22.1184 MHz
