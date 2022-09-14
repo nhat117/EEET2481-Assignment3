@@ -27,13 +27,73 @@ Project File Date:  09/14/2022
 <h2>Output:</h2>
 *** Using Compiler 'V6.14', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'Target 1'
-main.c(3): warning: In file included from...
+game.c(1): warning: In file included from...
+./game.h(3): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void game_start();
+               ^
+                void
+./game.h(4): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void display_board_to_lcd();
+                         ^
+                          void
+./game.h(5): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void check_game_condition();
+                         ^
+                          void
+./game.h(6): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void shoot();
+          ^
+           void
+./game.h(7): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void resultBuzzer();
+                 ^
+                  void
+./game.h(8): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void reset_player_board();
+                       ^
+                        void
+./game.h(9): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void test_display_uart_board();
+                            ^
+                             void
+./game.h(10): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void handle_welcome();
+                   ^
+                    void
+./game.h(11): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void handle_load();
+                ^
+                 void
+./game.h(12): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void handle_game();
+                ^
+                 void
+./game.h(13): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void handle_end();
+               ^
+                void
+./game.h(14): warning: no previous extern declaration for non-static variable 'message_type' [-Wmissing-variable-declarations]
+int message_type = 0;
+    ^
+./game.h(14): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+int message_type = 0;
+^
+./game.h(15): warning: no previous extern declaration for non-static variable 'game_first_load' [-Wmissing-variable-declarations]
+int game_first_load = 0;
+    ^
+./game.h(15): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+int game_first_load = 0;
+^
+./game.h(16): warning: no newline at end of file [-Wnewline-eof]
+#endif
+      ^
+game.c(2): warning: In file included from...
 C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(150): warning: In file included from...
 C:/Keil_v5/Library/CMSIS/Include\core_cm0.h(116): warning: In file included from...
 C:/Keil_v5/Library/CMSIS/Include\core_cmInstr.h(406): warning: implicit conversion changes signedness: 'uint32_t' (aka 'unsigned int') to 'int32_t' (aka 'int') [-Wsign-conversion]
   return(result);
   ~~~~~~ ^~~~~~
-main.c(3): warning: In file included from...
+game.c(2): warning: In file included from...
 C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(150): warning: In file included from...
 C:/Keil_v5/Library/CMSIS/Include\core_cm0.h(574): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
     SCB->SHP[_SHP_IDX(IRQn)] = (SCB->SHP[_SHP_IDX(IRQn)] & ~(0xFF << _BIT_SHIFT(IRQn))) |
@@ -44,7 +104,7 @@ C:/Keil_v5/Library/CMSIS/Include\core_cm0.h(577): warning: implicit conversion c
 C:/Keil_v5/Library/CMSIS/Include\core_cm0.h(608): warning: function 'NVIC_SystemReset' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
 {
 ^
-main.c(3): warning: In file included from...
+game.c(2): warning: In file included from...
 C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(11321): warning: anonymous unions are a C11 extension [-Wc11-extensions]
     union
     ^
@@ -60,12 +120,12 @@ C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(13607): warning: non-port
 #include "FMC.h"
          ^~~~~~~
          "fmc.h"
-main.c(3): warning: In file included from...
+game.c(2): warning: In file included from...
 C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(13607): warning: In file included from...
 C:/Keil_v5/Library/StdDriver/Include\FMC.h(314): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
     FMC->ISPADR = (u8index << 2);      /* Set UID Address. It must be word alignment. */
                 ~  ~~~~~~~~^~~~
-main.c(3): warning: In file included from...
+game.c(2): warning: In file included from...
 C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(13608): warning: non-portable path to file '"gpio.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
 #include "GPIO.h"
          ^~~~~~~~
@@ -118,7 +178,7 @@ C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(13620): warning: non-port
 #include "USBD.h"
          ^~~~~~~~
          "usbd.h"
-main.c(3): warning: In file included from...
+game.c(2): warning: In file included from...
 C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(13620): warning: In file included from...
 C:/Keil_v5/Library/StdDriver/Include\USBD.h(638): warning: variable 'u32CfgAddr' may be uninitialized when used here [-Wconditional-uninitialized]
     return ((*((__IO uint32_t *)(u32CfgAddr))) & USBD_CFGP_SSTALL);
@@ -127,7 +187,7 @@ C:/Keil_v5/Library/StdDriver/Include\USBD.h(622): note: initialize the variable 
     uint32_t u32CfgAddr;
                        ^
                         = 0
-main.c(3): warning: In file included from...
+game.c(2): warning: In file included from...
 C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(13621): warning: non-portable path to file '"pdma.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
 #include "PDMA.h"
          ^~~~~~~~
@@ -148,293 +208,259 @@ C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(13625): warning: non-port
 #include "ACMP.h"
          ^~~~~~~~
          "acmp.h"
-main.c(4): warning: In file included from...
-./sysconf.h(6): warning: no newline at end of file [-Wnewline-eof]
-#endif
-      ^
-main.c(5): warning: In file included from...
-./lcdconf.h(11): warning: no newline at end of file [-Wnewline-eof]
-#endif
-      ^
-main.c(6): warning: In file included from...
-./keypad.h(11): warning: no newline at end of file [-Wnewline-eof]
-#endif
-      ^
-main.c(7): warning: In file included from...
-./variable.h(8): warning: no newline at end of file [-Wnewline-eof]
-#endif
-      ^
-main.c(11): warning: no previous extern declaration for non-static variable 'uart_flag' [-Wmissing-variable-declarations]
+game.c(14): warning: no previous extern declaration for non-static variable 'uart_flag' [-Wmissing-variable-declarations]
 volatile int uart_flag = 0;
              ^
-main.c(11): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+game.c(14): note: declare 'static' if the variable is not intended to be used outside of this translation unit
 volatile int uart_flag = 0;
          ^
-main.c(12): warning: no previous extern declaration for non-static variable 'ptr1' [-Wmissing-variable-declarations]
+game.c(15): warning: no previous extern declaration for non-static variable 'ptr1' [-Wmissing-variable-declarations]
 volatile int ptr1 = 0;
              ^
-main.c(12): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+game.c(15): note: declare 'static' if the variable is not intended to be used outside of this translation unit
 volatile int ptr1 = 0;
          ^
-main.c(13): warning: no previous extern declaration for non-static variable 'ptr2' [-Wmissing-variable-declarations]
+game.c(16): warning: no previous extern declaration for non-static variable 'ptr2' [-Wmissing-variable-declarations]
 volatile int ptr2 = 0;
              ^
-main.c(13): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+game.c(16): note: declare 'static' if the variable is not intended to be used outside of this translation unit
 volatile int ptr2 = 0;
          ^
-main.c(14): warning: no previous extern declaration for non-static variable 'gy' [-Wmissing-variable-declarations]
+game.c(17): warning: no previous extern declaration for non-static variable 'gy' [-Wmissing-variable-declarations]
 volatile int gy = 0;
              ^
-main.c(14): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+game.c(17): note: declare 'static' if the variable is not intended to be used outside of this translation unit
 volatile int gy = 0;
          ^
-main.c(15): warning: no previous extern declaration for non-static variable 'gx' [-Wmissing-variable-declarations]
+game.c(18): warning: no previous extern declaration for non-static variable 'gx' [-Wmissing-variable-declarations]
 volatile int gx = 0;
              ^
-main.c(15): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+game.c(18): note: declare 'static' if the variable is not intended to be used outside of this translation unit
 volatile int gx = 0;
          ^
-main.c(20): warning: no previous extern declaration for non-static variable 'idx' [-Wmissing-variable-declarations]
+game.c(24): warning: no previous extern declaration for non-static variable 'idx' [-Wmissing-variable-declarations]
 int idx = 0;
     ^
-main.c(20): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+game.c(24): note: declare 'static' if the variable is not intended to be used outside of this translation unit
 int idx = 0;
 ^
-main.c(21): warning: no previous extern declaration for non-static variable 'shot_count' [-Wmissing-variable-declarations]
+game.c(25): warning: no previous extern declaration for non-static variable 'shot_count' [-Wmissing-variable-declarations]
 int shot_count = 0;
     ^
-main.c(21): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+game.c(25): note: declare 'static' if the variable is not intended to be used outside of this translation unit
 int shot_count = 0;
 ^
-main.c(22): warning: no previous extern declaration for non-static variable 'done_uploading' [-Wmissing-variable-declarations]
+game.c(26): warning: no previous extern declaration for non-static variable 'done_uploading' [-Wmissing-variable-declarations]
 int done_uploading = 0;
     ^
-main.c(22): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+game.c(26): note: declare 'static' if the variable is not intended to be used outside of this translation unit
 int done_uploading = 0;
 ^
-main.c(24): warning: no previous extern declaration for non-static variable 'game_board' [-Wmissing-variable-declarations]
-volatile int game_board[8][8] = {
-             ^
-main.c(24): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-volatile int game_board[8][8] = {
-         ^
-main.c(34): warning: no previous extern declaration for non-static variable 'player_board' [-Wmissing-variable-declarations]
-volatile int player_board[8][8] = {
-             ^
-main.c(34): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-volatile int player_board[8][8] = {
-         ^
-main.c(51): warning: no previous extern declaration for non-static variable 'state' [-Wmissing-variable-declarations]
+game.c(27): warning: no previous extern declaration for non-static variable 'state' [-Wmissing-variable-declarations]
 int state = WELCOME;
     ^
-main.c(51): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+game.c(27): note: declare 'static' if the variable is not intended to be used outside of this translation unit
 int state = WELCOME;
 ^
-main.c(52): warning: no previous extern declaration for non-static variable 'canResponding' [-Wmissing-variable-declarations]
+game.c(28): warning: no previous extern declaration for non-static variable 'canResponding' [-Wmissing-variable-declarations]
 int canResponding = 1;
     ^
-main.c(52): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+game.c(28): note: declare 'static' if the variable is not intended to be used outside of this translation unit
 int canResponding = 1;
 ^
-main.c(53): warning: no previous extern declaration for non-static variable 'btn_pressed' [-Wmissing-variable-declarations]
+game.c(29): warning: no previous extern declaration for non-static variable 'btn_pressed' [-Wmissing-variable-declarations]
 int btn_pressed = 0;
     ^
-main.c(53): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+game.c(29): note: declare 'static' if the variable is not intended to be used outside of this translation unit
 int btn_pressed = 0;
 ^
-main.c(54): warning: no previous extern declaration for non-static variable 'alreadyBuzz' [-Wmissing-variable-declarations]
+game.c(30): warning: no previous extern declaration for non-static variable 'alreadyBuzz' [-Wmissing-variable-declarations]
 int alreadyBuzz = 0;
     ^
-main.c(54): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+game.c(30): note: declare 'static' if the variable is not intended to be used outside of this translation unit
 int alreadyBuzz = 0;
 ^
-main.c(55): warning: this function declaration is not a prototype [-Wstrict-prototypes]
-void display_board_to_lcd();
-                         ^
-                          void
-main.c(56): warning: this function declaration is not a prototype [-Wstrict-prototypes]
-void check_game_condition();
-                         ^
-                          void
-main.c(57): warning: this function declaration is not a prototype [-Wstrict-prototypes]
-void shoot();
-          ^
-           void
-main.c(58): warning: this function declaration is not a prototype [-Wstrict-prototypes]
-void resultBuzzer();
-                 ^
-                  void
-main.c(59): warning: this function declaration is not a prototype [-Wstrict-prototypes]
-void reset_player_board();
-                       ^
-                        void
-main.c(60): warning: this function declaration is not a prototype [-Wstrict-prototypes]
-void test_display_uart_board();
-                            ^
-                             void
-main.c(61): warning: this function declaration is not a prototype [-Wstrict-prototypes]
-void handle_welcome();
-                   ^
-                    void
-main.c(62): warning: this function declaration is not a prototype [-Wstrict-prototypes]
-void handle_load();
-                ^
-                 void
-main.c(63): warning: this function declaration is not a prototype [-Wstrict-prototypes]
-void handle_game();
-                ^
-                 void
-main.c(64): warning: this function declaration is not a prototype [-Wstrict-prototypes]
-void handle_end();
-               ^
+game.c(33): warning: no previous extern declaration for non-static variable 'game_board' [-Wmissing-variable-declarations]
+volatile int game_board[8][8] = {
+             ^
+game.c(33): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+volatile int game_board[8][8] = {
+         ^
+game.c(43): warning: no previous extern declaration for non-static variable 'player_board' [-Wmissing-variable-declarations]
+volatile int player_board[8][8] = {
+             ^
+game.c(43): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+volatile int player_board[8][8] = {
+         ^
+game.c(59): warning: implicit declaration of function 'handleKeymatrix' is invalid in C99 [-Wimplicit-function-declaration]
+                        handleKeymatrix();
+                        ^
+game.c(56): warning: no previous prototype for function 'game_start' [-Wmissing-prototypes]
+void game_start() {
+     ^
+./game.h(3): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+void game_start();
+     ^
                 void
-main.c(65): warning: no previous extern declaration for non-static variable 'message_type' [-Wmissing-variable-declarations]
-int message_type = 0;
-    ^
-main.c(65): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-int message_type = 0;
-^
-main.c(66): warning: no previous extern declaration for non-static variable 'game_first_load' [-Wmissing-variable-declarations]
-int game_first_load = 0;
-    ^
-main.c(66): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-int game_first_load = 0;
-^
-main.c(71): warning: implicit declaration of function 'UART0_Config' is invalid in C99 [-Wimplicit-function-declaration]
-        UART0_Config();
-        ^
-main.c(109): warning: implicit declaration of function 'printS' is invalid in C99 [-Wimplicit-function-declaration]
+game.c(84): warning: implicit declaration of function 'printS' is invalid in C99 [-Wimplicit-function-declaration]
                         printS(0, 0, "/BATTLESHIP/");
                         ^
-main.c(108): warning: no previous prototype for function 'handle_welcome' [-Wmissing-prototypes]
+game.c(85): warning: implicit declaration of function 'set7seg' is invalid in C99 [-Wimplicit-function-declaration]
+                        set7seg(0,0);
+                        ^
+game.c(83): warning: no previous prototype for function 'handle_welcome' [-Wmissing-prototypes]
 void handle_welcome() {
      ^
-main.c(61): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+./game.h(10): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
 void handle_welcome();
      ^
                     void
-main.c(120): warning: implicit declaration of function 'printS_5x7' is invalid in C99 [-Wimplicit-function-declaration]
+game.c(95): warning: implicit declaration of function 'printS_5x7' is invalid in C99 [-Wimplicit-function-declaration]
                                 printS_5x7(0,0, "Map loaded successfully");
                                 ^
-main.c(149): warning: implicit declaration of function 'UART0_SendChar' is invalid in C99 [-Wimplicit-function-declaration]
+game.c(97): warning: implicit declaration of function 'LCD_clear' is invalid in C99 [-Wimplicit-function-declaration]
+                                        LCD_clear();
+                                        ^
+game.c(121): warning: implicit declaration of function 'LCD_clear' is invalid in C99 [-Wimplicit-function-declaration]
+                                                        LCD_clear();
+                                                        ^
+game.c(124): warning: implicit declaration of function 'UART0_SendChar' is invalid in C99 [-Wimplicit-function-declaration]
                                         UART0_SendChar(ReceivedByte);
                                         ^
-main.c(118): warning: no previous prototype for function 'handle_load' [-Wmissing-prototypes]
+game.c(93): warning: no previous prototype for function 'handle_load' [-Wmissing-prototypes]
 void handle_load() {
      ^
-main.c(62): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+./game.h(11): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
 void handle_load();
      ^
                  void
-main.c(158): warning: no previous prototype for function 'handle_game' [-Wmissing-prototypes]
+game.c(133): warning: no previous prototype for function 'handle_game' [-Wmissing-prototypes]
 void handle_game() {
      ^
-main.c(63): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+./game.h(12): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
 void handle_game();
      ^
                  void
-main.c(175): warning: implicit declaration of function 'printS' is invalid in C99 [-Wimplicit-function-declaration]
+game.c(150): warning: implicit declaration of function 'printS' is invalid in C99 [-Wimplicit-function-declaration]
                         printS(0, 0, "You win");
                         ^
-main.c(179): warning: implicit declaration of function 'printS' is invalid in C99 [-Wimplicit-function-declaration]
+game.c(154): warning: implicit declaration of function 'printS' is invalid in C99 [-Wimplicit-function-declaration]
                         printS(0, 0, "You lose");
                         ^
-main.c(172): warning: no previous prototype for function 'handle_end' [-Wmissing-prototypes]
+game.c(147): warning: no previous prototype for function 'handle_end' [-Wmissing-prototypes]
 void handle_end() {
      ^
-main.c(64): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+./game.h(13): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
 void handle_end();
      ^
                 void
-main.c(197): warning: no previous prototype for function 'reset_player_board' [-Wmissing-prototypes]
+game.c(172): warning: no previous prototype for function 'reset_player_board' [-Wmissing-prototypes]
 void reset_player_board()
      ^
-main.c(59): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+./game.h(8): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
 void reset_player_board();
      ^
                         void
-main.c(216): warning: implicit declaration of function 'printC_5x7' is invalid in C99 [-Wimplicit-function-declaration]
+game.c(191): warning: implicit declaration of function 'printC_5x7' is invalid in C99 [-Wimplicit-function-declaration]
                                 printC_5x7(j * 8, i * 8, '_');
                                 ^
-main.c(220): warning: implicit declaration of function 'printC_5x7' is invalid in C99 [-Wimplicit-function-declaration]
+game.c(195): warning: implicit declaration of function 'printC_5x7' is invalid in C99 [-Wimplicit-function-declaration]
                                 printC_5x7(j * 8, i * 8, 'X');
                                 ^
-main.c(208): warning: no previous prototype for function 'display_board_to_lcd' [-Wmissing-prototypes]
+game.c(183): warning: no previous prototype for function 'display_board_to_lcd' [-Wmissing-prototypes]
 void display_board_to_lcd()
      ^
-main.c(55): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+./game.h(4): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
 void display_board_to_lcd();
      ^
                           void
-main.c(233): warning: implicit declaration of function 'printC_5x7' is invalid in C99 [-Wimplicit-function-declaration]
+game.c(208): warning: implicit declaration of function 'printC_5x7' is invalid in C99 [-Wimplicit-function-declaration]
                                 printC_5x7(j * 8, i * 8, '_');
                                 ^
-main.c(237): warning: implicit declaration of function 'printC_5x7' is invalid in C99 [-Wimplicit-function-declaration]
+game.c(212): warning: implicit declaration of function 'printC_5x7' is invalid in C99 [-Wimplicit-function-declaration]
                                 printC_5x7(j * 8, i * 8, 'X');
                                 ^
-main.c(226): warning: no previous prototype for function 'test_display_uart_board' [-Wmissing-prototypes]
+game.c(201): warning: no previous prototype for function 'test_display_uart_board' [-Wmissing-prototypes]
 void test_display_uart_board() {
      ^
-main.c(60): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+./game.h(9): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
 void test_display_uart_board();
      ^
                              void
-main.c(243): warning: no previous prototype for function 'check_game_condition' [-Wmissing-prototypes]
+game.c(223): warning: implicit declaration of function 'LCD_clear' is invalid in C99 [-Wimplicit-function-declaration]
+                LCD_clear();
+                ^
+game.c(244): warning: implicit declaration of function 'LCD_clear' is invalid in C99 [-Wimplicit-function-declaration]
+                        LCD_clear();
+                        ^
+game.c(218): warning: no previous prototype for function 'check_game_condition' [-Wmissing-prototypes]
 void check_game_condition()
      ^
-main.c(56): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+./game.h(5): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
 void check_game_condition();
      ^
                           void
-main.c(276): warning: no previous prototype for function 'shoot' [-Wmissing-prototypes]
+game.c(253): warning: implicit declaration of function 'setShots' is invalid in C99 [-Wimplicit-function-declaration]
+        setShots(++shot_count);
+        ^
+game.c(267): warning: implicit declaration of function 'set7seg' is invalid in C99 [-Wimplicit-function-declaration]
+                set7seg(0, current_y);  
+                ^
+game.c(270): warning: implicit declaration of function 'set7seg' is invalid in C99 [-Wimplicit-function-declaration]
+                set7seg(0, current_x);
+                ^
+game.c(251): warning: no previous prototype for function 'shoot' [-Wmissing-prototypes]
 void shoot()
      ^
-main.c(57): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+./game.h(6): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
 void shoot();
      ^
            void
-main.c(302): warning: no previous prototype for function 'EINT1_IRQHandler' [-Wmissing-prototypes]
-void EINT1_IRQHandler(void)
-     ^
-main.c(302): note: declare 'static' if the function is not intended to be used outside of this translation unit
-void EINT1_IRQHandler(void)
-^
-static 
-main.c(308): warning: no previous prototype for function 'TMR0_IRQHandler' [-Wmissing-prototypes]
-void TMR0_IRQHandler(void)
-     ^
-main.c(308): note: declare 'static' if the function is not intended to be used outside of this translation unit
-void TMR0_IRQHandler(void)
-^
-static 
-main.c(316): warning: no previous prototype for function 'resultBuzzer' [-Wmissing-prototypes]
+game.c(277): warning: no previous prototype for function 'resultBuzzer' [-Wmissing-prototypes]
 void resultBuzzer()
      ^
-main.c(58): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+./game.h(7): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
 void resultBuzzer();
      ^
                   void
-main.c(330): warning: implicit conversion loses integer precision: 'volatile uint32_t' (aka 'volatile unsigned int') to 'char' [-Wimplicit-int-conversion]
+game.c(289): warning: no previous prototype for function 'EINT1_IRQHandler' [-Wmissing-prototypes]
+void EINT1_IRQHandler(void)
+     ^
+game.c(289): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void EINT1_IRQHandler(void)
+^
+static 
+game.c(297): warning: implicit declaration of function 'display7seg' is invalid in C99 [-Wimplicit-function-declaration]
+        display7seg(idx++);
+        ^
+game.c(295): warning: no previous prototype for function 'TMR0_IRQHandler' [-Wmissing-prototypes]
+void TMR0_IRQHandler(void)
+     ^
+game.c(295): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void TMR0_IRQHandler(void)
+^
+static 
+game.c(307): warning: implicit conversion loses integer precision: 'volatile uint32_t' (aka 'volatile unsigned int') to 'char' [-Wimplicit-int-conversion]
         ReceivedByte = UART0->RBR;
                      ~ ~~~~~~~^~~
-main.c(328): warning: no previous prototype for function 'UART02_IRQHandler' [-Wmissing-prototypes]
+game.c(305): warning: no previous prototype for function 'UART02_IRQHandler' [-Wmissing-prototypes]
 void UART02_IRQHandler(void)
      ^
-main.c(328): note: declare 'static' if the function is not intended to be used outside of this translation unit
+game.c(305): note: declare 'static' if the function is not intended to be used outside of this translation unit
 void UART02_IRQHandler(void)
 ^
 static 
-main.c(10): warning: no previous extern declaration for non-static variable 'ReceivedByte' [-Wmissing-variable-declarations]
+game.c(13): warning: no previous extern declaration for non-static variable 'ReceivedByte' [-Wmissing-variable-declarations]
 volatile char ReceivedByte;
               ^
-main.c(10): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+game.c(13): note: declare 'static' if the variable is not intended to be used outside of this translation unit
 volatile char ReceivedByte;
          ^
-83 warnings generated.
-compiling main.c...
+91 warnings generated.
+compiling game.c...
 linking...
-Program Size: Code=4280 RO-data=704 RW-data=1884 ZI-data=1456  
-".\Objects\Tutorial2_TestKeil.axf" - 0 Error(s), 83 Warning(s).
+Program Size: Code=4300 RO-data=704 RW-data=1884 ZI-data=1456  
+".\Objects\Tutorial2_TestKeil.axf" - 0 Error(s), 91 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -448,7 +474,7 @@ Package Vendor: Nuvoton
   C:\Users\nhatbuiminh\AppData\Local\Arm\Packs\Nuvoton\NuMicro_DFP\1.3.16\Device\NUC100\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>
