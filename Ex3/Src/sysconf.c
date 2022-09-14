@@ -32,7 +32,8 @@ void System_Config(void)
 	// The bi t   will   enabl e  t he  t i mer   i nt er r upt f l ag  TIF
 	TIMER0->TCSR |= (1 << 29);
 	// TimeOut   =  0. 5s  - - >  Counter ' s  TCMPR  =  0. 5s  /   ( 1/ ( 32768  Hz)   =  16384
-	TIMER0->TCMPR = 110592 - 1; // T = 0.005s
+	//TIMER0->TCMPR = 110592 - 1; // T = 0.005s
+	TIMER0->TCMPR = 11059; // T = 0.005s // TODO: Find appropriate count value
 	// start counting
 	TIMER0->TCSR |= (1 << 30);
 	NVIC->ISER[0] |= (1 << 8);

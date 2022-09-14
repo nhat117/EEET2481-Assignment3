@@ -16,6 +16,7 @@ volatile int gx = 0;
 extern int xy_mani;
 extern int current_x;
 extern int current_y;
+extern int tmr0_flag;
 int idx = 0;
 int shot_count = 0;
 int done_uploading = 0;
@@ -106,7 +107,11 @@ int main(void)
 
 void handle_welcome() {
 			printS(0, 0, "/BATTLESHIP/");
-			CLK_SysTickDelay(10000000);
+			set7seg(0,0);
+			set7seg(1,10);
+			set7seg(2,0);
+			set7seg(3,0);
+			CLK_SysTickDelay(1000000);
 			state = LOAD;
 }
 
@@ -151,7 +156,7 @@ void handle_load() {
 }
 
 void handle_game() {
-				if (game_first_load == 0) {
+			if (game_first_load == 0) {
 				display_board_to_lcd();
 				game_first_load = 1;
 			}
@@ -176,11 +181,7 @@ void handle_end() {
 
 		if (alreadyBuzz == 0)
 		{
-			set7seg(0,10);
-			set7seg(1,10);
-			set7seg(2,10);
-			set7seg(3,10);
-			//resultBuzzer();
+			resultBuzzer();
 		}
 
 		if (btn_pressed)
@@ -287,8 +288,15 @@ void shoot()
 
 	current_x = 0;
 	current_y = 0;
-	set7seg(0, 0);
-	set7seg(1, 0);
+	if (xy_mani) {
+		set7seg(0, current_y);	
+		xy_mani = 0;
+	} else {
+		set7seg(0, current_x);
+	}
+	
+
+
 }
 
 void EINT1_IRQHandler(void)
@@ -300,6 +308,7 @@ void EINT1_IRQHandler(void)
 void TMR0_IRQHandler(void)
 {
 	display7seg(idx++);
+	tmr0_flag = 1;
 	idx %= 4;
 	TIMER0->TISR |= (1 << 0);
 }

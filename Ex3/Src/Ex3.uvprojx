@@ -473,16 +473,6 @@
               <FileType>1</FileType>
               <FilePath>.\keypad.c</FilePath>
             </File>
-            <File>
-              <FileName>debounce.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\debounce.h</FilePath>
-            </File>
-            <File>
-              <FileName>debounce.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\debounce.c</FilePath>
-            </File>
           </Files>
         </Group>
       </Groups>

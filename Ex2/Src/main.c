@@ -84,7 +84,7 @@ void System_Config (void){
 ////////////////////////////For extracting the packet/////////////////////////////////////////////////////////////
 
 void latitudeHandler(void) {
-	//UART0_SendChar(line[22]); //S
+	UART0_SendChar(line[22]); //S
 	//UART0_SendChar(line[23]);//3
 	for (int i = 0; i < 8; i++) {
 		latitude[i] = line[21+i];

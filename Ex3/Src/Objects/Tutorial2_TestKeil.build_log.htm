@@ -21,19 +21,19 @@ Target DLL:      NULink\Nu_Link.dll V3.02
 Dialog DLL:      TARMCM1.DLL V1.14.2.0
  
 <h2>Project:</h2>
-\\Mac\Home\Desktop\Embedded Final Asm\Ex3\Src\Ex1.uvprojx
-Project File Date:  09/13/2022
+\\Mac\Home\Desktop\Embedded Final Asm\Ex3\Src\Ex3.uvprojx
+Project File Date:  09/14/2022
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.14', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'Target 1'
-keypad.c(2): warning: In file included from...
+main.c(3): warning: In file included from...
 C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(150): warning: In file included from...
 C:/Keil_v5/Library/CMSIS/Include\core_cm0.h(116): warning: In file included from...
 C:/Keil_v5/Library/CMSIS/Include\core_cmInstr.h(406): warning: implicit conversion changes signedness: 'uint32_t' (aka 'unsigned int') to 'int32_t' (aka 'int') [-Wsign-conversion]
   return(result);
   ~~~~~~ ^~~~~~
-keypad.c(2): warning: In file included from...
+main.c(3): warning: In file included from...
 C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(150): warning: In file included from...
 C:/Keil_v5/Library/CMSIS/Include\core_cm0.h(574): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
     SCB->SHP[_SHP_IDX(IRQn)] = (SCB->SHP[_SHP_IDX(IRQn)] & ~(0xFF << _BIT_SHIFT(IRQn))) |
@@ -44,7 +44,7 @@ C:/Keil_v5/Library/CMSIS/Include\core_cm0.h(577): warning: implicit conversion c
 C:/Keil_v5/Library/CMSIS/Include\core_cm0.h(608): warning: function 'NVIC_SystemReset' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
 {
 ^
-keypad.c(2): warning: In file included from...
+main.c(3): warning: In file included from...
 C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(11321): warning: anonymous unions are a C11 extension [-Wc11-extensions]
     union
     ^
@@ -60,12 +60,12 @@ C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(13607): warning: non-port
 #include "FMC.h"
          ^~~~~~~
          "fmc.h"
-keypad.c(2): warning: In file included from...
+main.c(3): warning: In file included from...
 C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(13607): warning: In file included from...
 C:/Keil_v5/Library/StdDriver/Include\FMC.h(314): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
     FMC->ISPADR = (u8index << 2);      /* Set UID Address. It must be word alignment. */
                 ~  ~~~~~~~~^~~~
-keypad.c(2): warning: In file included from...
+main.c(3): warning: In file included from...
 C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(13608): warning: non-portable path to file '"gpio.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
 #include "GPIO.h"
          ^~~~~~~~
@@ -118,7 +118,7 @@ C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(13620): warning: non-port
 #include "USBD.h"
          ^~~~~~~~
          "usbd.h"
-keypad.c(2): warning: In file included from...
+main.c(3): warning: In file included from...
 C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(13620): warning: In file included from...
 C:/Keil_v5/Library/StdDriver/Include\USBD.h(638): warning: variable 'u32CfgAddr' may be uninitialized when used here [-Wconditional-uninitialized]
     return ((*((__IO uint32_t *)(u32CfgAddr))) & USBD_CFGP_SSTALL);
@@ -127,7 +127,7 @@ C:/Keil_v5/Library/StdDriver/Include\USBD.h(622): note: initialize the variable 
     uint32_t u32CfgAddr;
                        ^
                         = 0
-keypad.c(2): warning: In file included from...
+main.c(3): warning: In file included from...
 C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(13621): warning: non-portable path to file '"pdma.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
 #include "PDMA.h"
          ^~~~~~~~
@@ -148,84 +148,293 @@ C:/Keil_v5/Library/NUC100Series/Include\NUC100Series.h(13625): warning: non-port
 #include "ACMP.h"
          ^~~~~~~~
          "acmp.h"
-keypad.c(3): warning: In file included from...
-./keypad.h(9): warning: no newline at end of file [-Wnewline-eof]
+main.c(4): warning: In file included from...
+./sysconf.h(6): warning: no newline at end of file [-Wnewline-eof]
 #endif
       ^
-keypad.c(11): warning: no previous extern declaration for non-static variable 'xy_mani' [-Wmissing-variable-declarations]
-int xy_mani = 0;
+main.c(5): warning: In file included from...
+./lcdconf.h(11): warning: no newline at end of file [-Wnewline-eof]
+#endif
+      ^
+main.c(6): warning: In file included from...
+./keypad.h(11): warning: no newline at end of file [-Wnewline-eof]
+#endif
+      ^
+main.c(7): warning: In file included from...
+./variable.h(8): warning: no newline at end of file [-Wnewline-eof]
+#endif
+      ^
+main.c(11): warning: no previous extern declaration for non-static variable 'uart_flag' [-Wmissing-variable-declarations]
+volatile int uart_flag = 0;
+             ^
+main.c(11): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+volatile int uart_flag = 0;
+         ^
+main.c(12): warning: no previous extern declaration for non-static variable 'ptr1' [-Wmissing-variable-declarations]
+volatile int ptr1 = 0;
+             ^
+main.c(12): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+volatile int ptr1 = 0;
+         ^
+main.c(13): warning: no previous extern declaration for non-static variable 'ptr2' [-Wmissing-variable-declarations]
+volatile int ptr2 = 0;
+             ^
+main.c(13): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+volatile int ptr2 = 0;
+         ^
+main.c(14): warning: no previous extern declaration for non-static variable 'gy' [-Wmissing-variable-declarations]
+volatile int gy = 0;
+             ^
+main.c(14): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+volatile int gy = 0;
+         ^
+main.c(15): warning: no previous extern declaration for non-static variable 'gx' [-Wmissing-variable-declarations]
+volatile int gx = 0;
+             ^
+main.c(15): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+volatile int gx = 0;
+         ^
+main.c(20): warning: no previous extern declaration for non-static variable 'idx' [-Wmissing-variable-declarations]
+int idx = 0;
     ^
-keypad.c(11): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-int xy_mani = 0;
+main.c(20): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+int idx = 0;
 ^
-keypad.c(12): warning: no previous extern declaration for non-static variable 'current_x' [-Wmissing-variable-declarations]
-int current_x = 10;
+main.c(21): warning: no previous extern declaration for non-static variable 'shot_count' [-Wmissing-variable-declarations]
+int shot_count = 0;
     ^
-keypad.c(12): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-int current_x = 10;
+main.c(21): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+int shot_count = 0;
 ^
-keypad.c(13): warning: no previous extern declaration for non-static variable 'current_y' [-Wmissing-variable-declarations]
-int current_y = 10;
+main.c(22): warning: no previous extern declaration for non-static variable 'done_uploading' [-Wmissing-variable-declarations]
+int done_uploading = 0;
     ^
-keypad.c(13): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-int current_y = 10;
+main.c(22): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+int done_uploading = 0;
 ^
-keypad.c(15): warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
-extern timer[4];
-~~~~~~ ^
-keypad.c(16): warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
-extern pattern;
-~~~~~~ ^
-keypad.c(21): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-        PA->DOUT &= ~(1<<3);
-                 ~~ ^~~~~~~
-keypad.c(33): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-                PA->DOUT &= ~(1<<4);
-                         ~~ ^~~~~~~
-keypad.c(46): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-                PA->DOUT &= ~(1<<5);
-                         ~~ ^~~~~~~
-keypad.c(56): warning: 'return' will never be executed [-Wunreachable-code-return]
-                 return 10;
-                        ^~
-keypad.c(63): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-        PA->DOUT &= ~(1<<3);
-                 ~~ ^~~~~~~
-keypad.c(76): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-                PA->DOUT &= ~(1<<4);
-                         ~~ ^~~~~~~
-keypad.c(89): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-                PA->DOUT &= ~(1<<5);
-                         ~~ ^~~~~~~
-keypad.c(99): warning: 'return' will never be executed [-Wunreachable-code-return]
-                return 10;
-                       ^~
-keypad.c(107): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-                PA->DOUT &= ~(1<<3);
-                         ~~ ^~~~~~~
-keypad.c(120): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-                PA->DOUT &= ~(1<<4);
-                         ~~ ^~~~~~~
-keypad.c(133): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-                PA->DOUT &= ~(1<<5);    
-                         ~~ ^~~~~~~
-keypad.c(143): warning: 'return' will never be executed [-Wunreachable-code-return]
-                return 10;
-                       ^~
-keypad.c(148): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-                PA->DOUT &= ~(1<<3);
-                         ~~ ^~~~~~~
-keypad.c(149): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-                PA->DOUT &= ~(1<<4);
-                         ~~ ^~~~~~~
-keypad.c(150): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
-                PA->DOUT &= ~(1<<5);
-                         ~~ ^~~~~~~
-49 warnings generated.
-compiling keypad.c...
+main.c(24): warning: no previous extern declaration for non-static variable 'game_board' [-Wmissing-variable-declarations]
+volatile int game_board[8][8] = {
+             ^
+main.c(24): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+volatile int game_board[8][8] = {
+         ^
+main.c(34): warning: no previous extern declaration for non-static variable 'player_board' [-Wmissing-variable-declarations]
+volatile int player_board[8][8] = {
+             ^
+main.c(34): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+volatile int player_board[8][8] = {
+         ^
+main.c(51): warning: no previous extern declaration for non-static variable 'state' [-Wmissing-variable-declarations]
+int state = WELCOME;
+    ^
+main.c(51): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+int state = WELCOME;
+^
+main.c(52): warning: no previous extern declaration for non-static variable 'canResponding' [-Wmissing-variable-declarations]
+int canResponding = 1;
+    ^
+main.c(52): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+int canResponding = 1;
+^
+main.c(53): warning: no previous extern declaration for non-static variable 'btn_pressed' [-Wmissing-variable-declarations]
+int btn_pressed = 0;
+    ^
+main.c(53): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+int btn_pressed = 0;
+^
+main.c(54): warning: no previous extern declaration for non-static variable 'alreadyBuzz' [-Wmissing-variable-declarations]
+int alreadyBuzz = 0;
+    ^
+main.c(54): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+int alreadyBuzz = 0;
+^
+main.c(55): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void display_board_to_lcd();
+                         ^
+                          void
+main.c(56): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void check_game_condition();
+                         ^
+                          void
+main.c(57): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void shoot();
+          ^
+           void
+main.c(58): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void resultBuzzer();
+                 ^
+                  void
+main.c(59): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void reset_player_board();
+                       ^
+                        void
+main.c(60): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void test_display_uart_board();
+                            ^
+                             void
+main.c(61): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void handle_welcome();
+                   ^
+                    void
+main.c(62): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void handle_load();
+                ^
+                 void
+main.c(63): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void handle_game();
+                ^
+                 void
+main.c(64): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void handle_end();
+               ^
+                void
+main.c(65): warning: no previous extern declaration for non-static variable 'message_type' [-Wmissing-variable-declarations]
+int message_type = 0;
+    ^
+main.c(65): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+int message_type = 0;
+^
+main.c(66): warning: no previous extern declaration for non-static variable 'game_first_load' [-Wmissing-variable-declarations]
+int game_first_load = 0;
+    ^
+main.c(66): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+int game_first_load = 0;
+^
+main.c(71): warning: implicit declaration of function 'UART0_Config' is invalid in C99 [-Wimplicit-function-declaration]
+        UART0_Config();
+        ^
+main.c(109): warning: implicit declaration of function 'printS' is invalid in C99 [-Wimplicit-function-declaration]
+                        printS(0, 0, "/BATTLESHIP/");
+                        ^
+main.c(108): warning: no previous prototype for function 'handle_welcome' [-Wmissing-prototypes]
+void handle_welcome() {
+     ^
+main.c(61): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+void handle_welcome();
+     ^
+                    void
+main.c(120): warning: implicit declaration of function 'printS_5x7' is invalid in C99 [-Wimplicit-function-declaration]
+                                printS_5x7(0,0, "Map loaded successfully");
+                                ^
+main.c(149): warning: implicit declaration of function 'UART0_SendChar' is invalid in C99 [-Wimplicit-function-declaration]
+                                        UART0_SendChar(ReceivedByte);
+                                        ^
+main.c(118): warning: no previous prototype for function 'handle_load' [-Wmissing-prototypes]
+void handle_load() {
+     ^
+main.c(62): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+void handle_load();
+     ^
+                 void
+main.c(158): warning: no previous prototype for function 'handle_game' [-Wmissing-prototypes]
+void handle_game() {
+     ^
+main.c(63): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+void handle_game();
+     ^
+                 void
+main.c(175): warning: implicit declaration of function 'printS' is invalid in C99 [-Wimplicit-function-declaration]
+                        printS(0, 0, "You win");
+                        ^
+main.c(179): warning: implicit declaration of function 'printS' is invalid in C99 [-Wimplicit-function-declaration]
+                        printS(0, 0, "You lose");
+                        ^
+main.c(172): warning: no previous prototype for function 'handle_end' [-Wmissing-prototypes]
+void handle_end() {
+     ^
+main.c(64): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+void handle_end();
+     ^
+                void
+main.c(197): warning: no previous prototype for function 'reset_player_board' [-Wmissing-prototypes]
+void reset_player_board()
+     ^
+main.c(59): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+void reset_player_board();
+     ^
+                        void
+main.c(216): warning: implicit declaration of function 'printC_5x7' is invalid in C99 [-Wimplicit-function-declaration]
+                                printC_5x7(j * 8, i * 8, '_');
+                                ^
+main.c(220): warning: implicit declaration of function 'printC_5x7' is invalid in C99 [-Wimplicit-function-declaration]
+                                printC_5x7(j * 8, i * 8, 'X');
+                                ^
+main.c(208): warning: no previous prototype for function 'display_board_to_lcd' [-Wmissing-prototypes]
+void display_board_to_lcd()
+     ^
+main.c(55): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+void display_board_to_lcd();
+     ^
+                          void
+main.c(233): warning: implicit declaration of function 'printC_5x7' is invalid in C99 [-Wimplicit-function-declaration]
+                                printC_5x7(j * 8, i * 8, '_');
+                                ^
+main.c(237): warning: implicit declaration of function 'printC_5x7' is invalid in C99 [-Wimplicit-function-declaration]
+                                printC_5x7(j * 8, i * 8, 'X');
+                                ^
+main.c(226): warning: no previous prototype for function 'test_display_uart_board' [-Wmissing-prototypes]
+void test_display_uart_board() {
+     ^
+main.c(60): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+void test_display_uart_board();
+     ^
+                             void
+main.c(243): warning: no previous prototype for function 'check_game_condition' [-Wmissing-prototypes]
+void check_game_condition()
+     ^
+main.c(56): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+void check_game_condition();
+     ^
+                          void
+main.c(276): warning: no previous prototype for function 'shoot' [-Wmissing-prototypes]
+void shoot()
+     ^
+main.c(57): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+void shoot();
+     ^
+           void
+main.c(302): warning: no previous prototype for function 'EINT1_IRQHandler' [-Wmissing-prototypes]
+void EINT1_IRQHandler(void)
+     ^
+main.c(302): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void EINT1_IRQHandler(void)
+^
+static 
+main.c(308): warning: no previous prototype for function 'TMR0_IRQHandler' [-Wmissing-prototypes]
+void TMR0_IRQHandler(void)
+     ^
+main.c(308): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void TMR0_IRQHandler(void)
+^
+static 
+main.c(316): warning: no previous prototype for function 'resultBuzzer' [-Wmissing-prototypes]
+void resultBuzzer()
+     ^
+main.c(58): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
+void resultBuzzer();
+     ^
+                  void
+main.c(330): warning: implicit conversion loses integer precision: 'volatile uint32_t' (aka 'volatile unsigned int') to 'char' [-Wimplicit-int-conversion]
+        ReceivedByte = UART0->RBR;
+                     ~ ~~~~~~~^~~
+main.c(328): warning: no previous prototype for function 'UART02_IRQHandler' [-Wmissing-prototypes]
+void UART02_IRQHandler(void)
+     ^
+main.c(328): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void UART02_IRQHandler(void)
+^
+static 
+main.c(10): warning: no previous extern declaration for non-static variable 'ReceivedByte' [-Wmissing-variable-declarations]
+volatile char ReceivedByte;
+              ^
+main.c(10): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+volatile char ReceivedByte;
+         ^
+83 warnings generated.
+compiling main.c...
 linking...
-Program Size: Code=4212 RO-data=704 RW-data=1892 ZI-data=1432  
-".\Objects\Tutorial2_TestKeil.axf" - 0 Error(s), 49 Warning(s).
+Program Size: Code=4280 RO-data=704 RW-data=1884 ZI-data=1456  
+".\Objects\Tutorial2_TestKeil.axf" - 0 Error(s), 83 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -239,7 +448,7 @@ Package Vendor: Nuvoton
   C:\Users\nhatbuiminh\AppData\Local\Arm\Packs\Nuvoton\NuMicro_DFP\1.3.16\Device\NUC100\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>

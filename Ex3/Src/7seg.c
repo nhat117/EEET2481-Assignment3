@@ -17,7 +17,7 @@ int pattern[] = {
                   0b11111111   //Blank LED 
                 }; 
 
-int timer[4] = {10,10,10,10};
+int timer[4] = {0,10,0,0};
 int cur = 0;
 
 void set7seg(int index, int value) {
