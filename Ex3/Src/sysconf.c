@@ -26,17 +26,16 @@ void System_Config(void)
 	TIMER0->TCSR &= ~(0b11 << 27);
 	TIMER0->TCSR |= (0b01 << 27); // periodic  mode
 	TIMER0->TCSR &= ~(1 << 24);
-	// TDR to  be  updated  continuously  while  t i mer   counter   is  counting
+	// TDR to  be  updated  continuously  while  timer   counter   is  counting
 	TIMER0->TCSR |= (1 << 16);
-	// Enable  TE  bit   ( bi t   29)   of   TCSR
-	// The bi t   will   enabl e  t he  t i mer   i nt er r upt f l ag  TIF
+	// Enable  TE  bit   ( bit   29)   of   TCSR
+	// The bit will enable the timer interrupt flag  TIF
 	TIMER0->TCSR |= (1 << 29);
-	// TimeOut   =  0. 5s  - - >  Counter ' s  TCMPR  =  0. 5s  /   ( 1/ ( 32768  Hz)   =  16384
-	//TIMER0->TCMPR = 110592 - 1; // T = 0.005s
-	TIMER0->TCMPR = 11059; // T = 0.005s // TODO: Find appropriate count value
+	TIMER0->TCMPR = 11059; // T = 0.0005s - 0.5 ms 
 	// start counting
 	TIMER0->TCSR |= (1 << 30);
-	NVIC->ISER[0] |= (1 << 8);
+	//Enable TIMER0 interrupt
+	NVIC->ISER[0] |= (1 << 8); 
 	NVIC->IP[2] &= ~(0b11 << 6);
 
 	// UART0 Clock selection and configuration
@@ -72,10 +71,10 @@ void System_Config(void)
 	PB->PMD &= (~(0b11 << 30));
 	PB->IMD &= (~(1 << 15));
 	PB->IEN |= (1 << 15); // Enable interrupt
-	NVIC->ISER[0] |= 1 << 3;
+	NVIC->ISER[0] |= 1 << 3; 
 	NVIC->IP[0] &= (~(0b11 << 30));
 
-	// debounce
+	//Turn on hardware debounce
 	PB->DBEN |= (1 << 15);
 	PA->DBEN |= (0b1111111 << 0);
 	GPIO->DBNCECON &= ~(1 << 4);

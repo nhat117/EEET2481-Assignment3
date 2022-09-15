@@ -19,8 +19,8 @@ int current_x = 0;
 int current_y = 0;
 
 extern timer[4];
-extern pattern;
-
+extern pattern; //LCD pattern
+//Searching for key matrix button
 int search_col1(void)
 {
     // Drive ROW1 output pin as LOW. Other ROW pins as HIGH
@@ -29,7 +29,6 @@ int search_col1(void)
 	PA->DOUT |= (1<<5);
     if (C1_pressed)
     {
-				PC->DOUT ^= 1 << 12;
         return 1;	
     }
   else
@@ -138,10 +137,10 @@ int search_col3(void)
 		else
 		return 10;
 	}
-		return 10;
+		return 10; 
 	}
 }	
-
+//Handling key matrix
 void handleKeymatrix() {
 		PA->DOUT &= ~(1<<3);
 		PA->DOUT &= ~(1<<4);
@@ -176,13 +175,13 @@ void handleKeymatrix() {
 				c3_state = 0;
 				int temp = search_col3();
 				if (temp != 10) {
-					if (temp != 9) {
+					if (temp != 9) { 
 						if (xy_mani == 0) {
 							current_x = temp;
 						} else {
 							current_y = temp;
 						}		
-					} else {
+					} else { // 9 to switch between x and y
 						if (xy_mani == 0) {
 							xy_mani = 1;
 						} else if (xy_mani == 1){
@@ -200,6 +199,8 @@ void handleKeymatrix() {
 		}
 }
 
+
+///Debouncing function for key matrix
 int debounceC3(void) {
 	if (tmr0_flag) {
 		c3_state++;

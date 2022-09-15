@@ -53,7 +53,7 @@ void display7seg(int cur) {
 	}
 	PE->DOUT = pattern[timer[cur]];
 }
-
+//Calculating user shot
 void setShots(int shot) {
 	int first_part = shot / 10;
 	int second_part = shot % 10;

@@ -1,6 +1,7 @@
 #include "game.h"
 #include "NUC100Series.h"
 
+//Main game state declaration
 enum game_state
 {
 	WELCOME,
@@ -9,7 +10,7 @@ enum game_state
 	END
 };
 
-
+//Variable declaration
 volatile char ReceivedByte;
 volatile int uart_flag = 0;
 volatile int ptr1 = 0;
@@ -25,20 +26,20 @@ int idx = 0;
 int shot_count = 0;
 int done_uploading = 0;
 int state = WELCOME;
-int canResponding = 1;
+int canResponding = 0;
 int btn_pressed = 0;
 int alreadyBuzz = 0;
 
-
+//Board game declaration
 volatile int game_board[8][8] = {
 	{0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 1, 1, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 1, 0},
-	{0, 0, 0, 0, 0, 0, 1, 0},
-	{0, 0, 1, 1, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0},
-	{1, 1, 0, 0, 1, 0, 0, 0},
-	{0, 0, 0, 0, 1, 0, 0, 0}};
+	{0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0}};
 
 volatile int player_board[8][8] = {
 	{0, 0, 0, 0, 0, 0, 0, 0},
@@ -52,17 +53,13 @@ volatile int player_board[8][8] = {
 
 
 
-//////////////////////Game Handler
+//////////////////////Game Handler///////////////
 void game_start() {
 if (canResponding)
 		{
 			handleKeymatrix();
 		}
-		if (xy_mani)
-		{
-			PC->DOUT ^= 1 << 15;
-		}
-		
+
 		switch (state)
 		{
 		case WELCOME:
@@ -79,7 +76,7 @@ if (canResponding)
 			break;
 		}
 }	
-	
+//////////////Game State Handler///////////////////////////
 void handle_welcome() {
 			printS(0, 0, "/BATTLESHIP/");
 			set7seg(0,0);
@@ -104,6 +101,7 @@ void handle_load() {
 					state = GAME;
 				}
 			} else {
+				//Loading game board 
 				if (uart_flag) {
 					if (ReceivedByte != ' ' && ReceivedByte != '\n' && ReceivedByte != '\r' && ReceivedByte != '\t') {
 						if (ReceivedByte == '1') {
@@ -121,6 +119,7 @@ void handle_load() {
 							LCD_clear();
 						}
 					}
+					//For debuging, send char via UART Tx
 					UART0_SendChar(ReceivedByte);
 					uart_flag = 0;
 				}
@@ -168,53 +167,7 @@ void handle_end() {
 		}
 	
 }
-
-void reset_player_board()
-{
-	for (int i = 0; i < 8; i++)
-	{
-		for (int j = 0; j < 8; j++)
-		{
-			player_board[i][j] = 0;
-		}
-	}
-}
-
-void display_board_to_lcd()
-{
-	for (int i = 0; i < 8; i++)
-	{
-		for (int j = 0; j < 8; j++)
-		{
-			if (player_board[i][j] == 0)
-			{
-				printC_5x7(j * 8, i * 8, '_');
-			}
-			else
-			{
-				printC_5x7(j * 8, i * 8, 'X');
-			}
-		}
-	}
-}
-
-void test_display_uart_board() {
-for (int i = 0; i < 8; i++)
-	{
-		for (int j = 0; j < 8; j++)
-		{
-			if (game_board[i][j] == 0)
-			{
-				printC_5x7(j * 8, i * 8, '_');
-			}
-			else
-			{
-				printC_5x7(j * 8, i * 8, 'X');
-			}
-		}
-	}
-}
-
+//////////////////Ultilities function
 void check_game_condition()
 {
 	if (shot_count > 16)
@@ -274,6 +227,54 @@ void shoot()
 
 }
 
+void reset_player_board()
+{
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			player_board[i][j] = 0;
+		}
+	}
+}
+
+void display_board_to_lcd()
+{
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if (player_board[i][j] == 0)
+			{
+				printC_5x7(j * 8, i * 8, '_');
+			}
+			else
+			{
+				printC_5x7(j * 8, i * 8, 'X');
+			}
+		}
+	}
+}
+
+void test_display_uart_board() {
+for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if (game_board[i][j] == 0)
+			{
+				printC_5x7(j * 8, i * 8, '_');
+			}
+			else
+			{
+				printC_5x7(j * 8, i * 8, 'X');
+			}
+		}
+	}
+}
+
+
+
 void resultBuzzer()
 {
 	for (int i = 0; i < 10; i++)
@@ -282,7 +283,7 @@ void resultBuzzer()
 		CLK_SysTickDelay(100000);
 	}
 	PB->DOUT |= (1 << 11);
-	alreadyBuzz = 1;
+	alreadyBuzz = 1; //Buzzer buzz 5 state
 }
 
 //////////////////////Interrupt service routine//////////////////////////

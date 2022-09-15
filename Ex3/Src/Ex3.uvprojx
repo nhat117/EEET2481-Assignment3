@@ -459,11 +459,6 @@
               <FilePath>.\lcdconf.h</FilePath>
             </File>
             <File>
-              <FileName>variable.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\variable.h</FilePath>
-            </File>
-            <File>
               <FileName>keypad.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\keypad.h</FilePath>

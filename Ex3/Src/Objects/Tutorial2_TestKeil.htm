@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Tutorial2_TestKeil.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Tutorial2_TestKeil.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6140002: Last Updated: Wed Sep 14 14:40:35 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6140002: Last Updated: Thu Sep 15 17:10:28 2022
 <BR><P>
 <H3>Maximum Stack Usage =         88 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -478,7 +478,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_load
 </UL>
 
-<P><STRONG><a name="[42]"></a>check_game_condition</STRONG> (Thumb, 92 bytes, Stack size 24 bytes, game.o(.text.check_game_condition))
+<P><STRONG><a name="[42]"></a>check_game_condition</STRONG> (Thumb, 80 bytes, Stack size 24 bytes, game.o(.text.check_game_condition))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = check_game_condition &rArr; LCD_clear &rArr; LCD_SetAddress
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_clear
@@ -498,7 +498,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handleKeymatrix
 </UL>
 
-<P><STRONG><a name="[41]"></a>display7seg</STRONG> (Thumb, 168 bytes, Stack size 0 bytes, 7seg.o(.text.display7seg))
+<P><STRONG><a name="[41]"></a>display7seg</STRONG> (Thumb, 172 bytes, Stack size 0 bytes, 7seg.o(.text.display7seg))
 <BR><BR>[Called By]<UL><LI><a href="#[e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TMR0_IRQHandler
 </UL>
 
@@ -510,7 +510,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_game
 </UL>
 
-<P><STRONG><a name="[45]"></a>game_start</STRONG> (Thumb, 92 bytes, Stack size 8 bytes, game.o(.text.game_start))
+<P><STRONG><a name="[45]"></a>game_start</STRONG> (Thumb, 56 bytes, Stack size 8 bytes, game.o(.text.game_start))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = game_start &rArr; handle_welcome &rArr; printS &rArr; printC &rArr; lcdSetAddr
 </UL>
 <BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_welcome
@@ -555,7 +555,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;game_start
 </UL>
 
-<P><STRONG><a name="[48]"></a>handle_load</STRONG> (Thumb, 204 bytes, Stack size 16 bytes, game.o(.text.handle_load))
+<P><STRONG><a name="[48]"></a>handle_load</STRONG> (Thumb, 196 bytes, Stack size 16 bytes, game.o(.text.handle_load))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = handle_load &rArr; printS_5x7 &rArr; printC_5x7 &rArr; lcdSetAddr
 </UL>
 <BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART0_SendChar
@@ -655,7 +655,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handle_end
 </UL>
 
-<P><STRONG><a name="[4c]"></a>search_col1</STRONG> (Thumb, 108 bytes, Stack size 8 bytes, keypad.o(.text.search_col1))
+<P><STRONG><a name="[4c]"></a>search_col1</STRONG> (Thumb, 100 bytes, Stack size 8 bytes, keypad.o(.text.search_col1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = search_col1
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handleKeymatrix

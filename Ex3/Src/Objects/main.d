@@ -26,4 +26,4 @@
   C:\Keil_v5\Library\StdDriver\Include\PS2.h \
   C:\Keil_v5\Library\StdDriver\Include\CLK.h \
   C:\Keil_v5\Library\StdDriver\Include\ACMP.h sysconf.h lcdconf.h \
-  keypad.h variable.h 7seg.h
+  keypad.h 7seg.h
