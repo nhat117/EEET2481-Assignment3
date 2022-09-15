@@ -30,7 +30,6 @@ int main(void)
 	
 
 	System_Config();
-	GPIO_SetMode(PC, BIT12, GPIO_MODE_OUTPUT);
 	SPI3_Config();
 	SPI2_Config();
 	ADC7_Config();
@@ -44,8 +43,8 @@ int main(void)
 
 	printS_5x7(2, 0, "EEET2481 Ex1");
 	printS_5x7(2, 8, "ADC7 conversion test");
-	printS_5x7(2, 16, "Reference voltage: 5 V");
-	printS_5x7(2, 24, "A/D resolution: 1.221 mV");
+	printS_5x7(2, 16, "Reference voltage: 3.3 V");
+	printS_5x7(2, 24, "A/D resolution: 0.8058 mV");
 	printS_5x7(2, 40, "A/D value:");
 
 	ADC->ADCR |= (1 << 11); // start ADC channel 7 conversion
@@ -58,14 +57,11 @@ int main(void)
 		while (adc7_val > VOLTAGE_THRESHOLD)
 		{
 			// TODO: Send data to SPI
-			PC->DOUT |= (1 << 12);
+
 			sent_char('2', '0');
 			ADC_handler();
 		}
-
-		PC->DOUT &= ~(1 << 12);
-
-		CLK_SysTickDelay(20000);
+		CLK_SysTickDelay(2000000); //LCD Refresh rate
 	}
 }
 
@@ -145,7 +141,8 @@ void System_Config(void)
 	CLK->PLLCON &= ~(1 << 19); // 0: PLL input is HXT
 	CLK->PLLCON &= ~(1 << 16); // PLL in normal mode
 	CLK->PLLCON &= (~(0x01FF << 0));
-	CLK->PLLCON |= 48;
+	//Formula : FOUT = FIN X ((nf/nr)x(1/no)
+	CLK->PLLCON |= 48; //NR =3 -> IN_DV = 1, NO = 4 OUT_DV = 3 -> , NF = 50 -> FB_DV = 48
 	CLK->PLLCON &= ~(1 << 18); // 0: enable PLLOUT
 	while (!(CLK->CLKSTATUS & PLL_STATUS))
 		;
@@ -165,7 +162,7 @@ void System_Config(void)
 	// ADC Clock selection and configuration
 	CLK->CLKSEL1 &= ~(0x03 << 2); // ADC clock source is 12 MHz
 	CLK->CLKDIV &= ~(0x0FF << 16);
-	CLK->CLKDIV |= (0x0B << 16); // ADC clock divider is (11+1) --> ADC clock is 12/12 = 1 MHz
+	CLK->CLKDIV |= (0x0B << 16); // ADC clock divider is (11+1) --> ADC clock is 12/12 = 1 MHz (clksrc/(adc_n +1))
 	CLK->APBCLK |= (0x01 << 28); // enable ADC clock
 
 	SYS_LockReg(); // Lock protected registers
