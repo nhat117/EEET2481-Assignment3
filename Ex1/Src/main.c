@@ -120,6 +120,7 @@ void LCD_clear(void)
 	{
 		LCD_data(0x00);
 	}
+
 }
 
 void LCD_SetAddress(uint8_t PageAddr, uint8_t ColumnAddr)

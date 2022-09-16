@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Tutorial2_TestKeil.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Tutorial2_TestKeil.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6140002: Last Updated: Wed Sep 14 14:12:46 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6140002: Last Updated: Fri Sep 16 12:12:25 2022
 <BR><P>
 <H3>Maximum Stack Usage =         64 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -456,13 +456,11 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[42]"></a>UART0_SendChar</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, main.o(.text.UART0_SendChar))
-<BR><BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;latitudeHandler
+<BR><BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;longtitudeHandler
 </UL>
 
-<P><STRONG><a name="[41]"></a>latitudeHandler</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, main.o(.text.latitudeHandler))
+<P><STRONG><a name="[46]"></a>latitudeHandler</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, main.o(.text.latitudeHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = latitudeHandler
-</UL>
-<BR>[Calls]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART0_SendChar
 </UL>
 <BR>[Called By]<UL><LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -479,16 +477,20 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;printC
 </UL>
 
-<P><STRONG><a name="[46]"></a>longtitudeHandler</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, main.o(.text.longtitudeHandler))
-<BR><BR>[Called By]<UL><LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<P><STRONG><a name="[41]"></a>longtitudeHandler</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, main.o(.text.longtitudeHandler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = longtitudeHandler
+</UL>
+<BR>[Calls]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART0_SendChar
+</UL>
+<BR>[Called By]<UL><LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[33]"></a>main</STRONG> (Thumb, 148 bytes, Stack size 0 bytes, main.o(.text.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = main &rArr; printS &rArr; printC &rArr; lcdSetAddr
 </UL>
 <BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;printS
-<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;longtitudeHandler
-<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;latitudeHandler
+<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;longtitudeHandler
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;latitudeHandler
 <LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART0_Config
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;System_Config
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI3_Config
